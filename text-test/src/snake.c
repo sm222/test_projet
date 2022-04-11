@@ -52,7 +52,7 @@ void clean(int st[size_screen][size_screen], int x , int y)
 void lose(int *point, char *str)
 {
 	write(1, "\e[1;1H\e[2J", 10);
-	printf("points %d\n", point[3]);
+	printf("the bord was %d, you lose at %d points\n",size_screen , point[3]);
     menu_code(str);
 }
 
@@ -90,51 +90,56 @@ void game_snake(char *name, int game_size)
 		write(1, "\n", 1);
 		printMap(scr, snakeInfo[1], snakeInfo[2], snakeInfo[0]);
 		scanf("%c", &chr);
-		if (chr == 'w')
+		switch(chr)
 		{
-			snakeInfo[2]--;
-			if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
+			case 'w':
+				snakeInfo[2]--;
+				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
+					gameOn = 0;
+				clean(*scr, 0 ,0);
+				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
+				snakeInfo[0]++;
+				snakeInfo[3]++;
+				break;
+
+			case 'a':
+				snakeInfo[1]--;
+				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[1] == 0 || snakeInfo[1] == size_screen -1)
+					gameOn = 0;
+				clean(*scr, 0 ,0);
+				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
+				snakeInfo[0]++;
+				snakeInfo[3]++;
+				break;
+
+			case 'd':
+				snakeInfo[1]++;
+				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[1] == 0 || snakeInfo[1] == size_screen -1)
+					gameOn = 0;
+				clean(*scr, 0 ,0);
+				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
+				snakeInfo[0]++;
+				snakeInfo[3]++;
+				break;
+
+			case 's':
+				snakeInfo[2]++;
+				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
+					gameOn = 0;
+				clean(*scr, 0 ,0);
+				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
+				snakeInfo[0]++;
+				snakeInfo[3]++;
+				break;
+				
+			case 'x':
 				gameOn = 0;
-			clean(*scr, 0 ,0);
-			scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-			snakeInfo[0]++;
-			snakeInfo[3]++;
+				break;
+
+			default:
+				break;
 		}
-		if (chr == 'a')
-		{
-			snakeInfo[1]--;
-			if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[1] == 0 || snakeInfo[1] == size_screen -1)
-				gameOn = 0;
-			clean(*scr, 0 ,0);
-			scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-			snakeInfo[0]++;
-			snakeInfo[3]++;
-		}
-		if (chr == 'd')
-		{
-			snakeInfo[1]++;
-			if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[1] == 0 || snakeInfo[1] == size_screen -1)
-				gameOn = 0;
-			clean(*scr, 0 ,0);
-			scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-			snakeInfo[0]++;
-			snakeInfo[3]++;
-		}
-		if (chr == 's')
-		{
-			snakeInfo[2]++;
-			if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
-				gameOn = 0;
-			clean(*scr, 0 ,0);
-			scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-			snakeInfo[0]++;
-			snakeInfo[3]++;
-		}
-		if (chr == 'x')
-		{
-			gameOn = 0;	
-			break;
-		}
+		
 	}
 	lose(snakeInfo, name);
 	return (0);
