@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-#define size_screen 10
+static int size_screen = 10;
 
 void menu_code(char *str);
 
@@ -29,6 +29,7 @@ void printMap(int st[size_screen][size_screen], int x , int y,int snakeInfo)
 		x = 0;
 		y++;
 	}
+	write(1, "wasd to move, x to leave\n", 26);
 }
 
 void clean(int st[size_screen][size_screen], int x , int y)
@@ -59,11 +60,11 @@ void lose(int *point, char *str)
 
 void game_snake(char *name, int game_size)
 {
+	size_screen = game_size; 
 	int scr[size_screen][size_screen];
 	int gameOn;
 	int snakeInfo[5]; //0 is size,1 is x 2 is y, 3 is score 
 	char chr;
-	//size_screen = 10; 
 
     printf("\e[1;1H\e[2J");
 	snakeInfo[3] = 4;
@@ -128,6 +129,11 @@ void game_snake(char *name, int game_size)
 			scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
 			snakeInfo[0]++;
 			snakeInfo[3]++;
+		}
+		if (chr == 'x')
+		{
+			gameOn = 0;	
+			break;
 		}
 	}
 	lose(snakeInfo, name);
