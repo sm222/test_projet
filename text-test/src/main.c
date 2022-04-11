@@ -1,10 +1,36 @@
 #include <string.h>
-void game_snake(char *name);
+void game_snake(char *name, int game_size);
+
+int	ft_atoi(char *str)
+{
+	int	p;
+	int	num;
+	int	min;
+
+	min = 1;
+	p = 0;
+	num = 0;
+	while (str[p] == '\t' || str[p] == '\n' || str[p] == '\v'
+		|| str[p] == '\f' || str[p] == '\r' || str[p] == ' ')
+		p++;
+	while (str[p] == '-' || str[p] == '+')
+	{
+		if (str[p] == '-')
+			min = min * -1;
+		p++;
+	}
+	while (str[p] >= '0' && str[p] <= '9')
+	{
+		num = num * 10 + (str[p] - 48);
+		p++;
+	}
+	return (num * min);
+}
 
 void menu_code(char *str)
 {
-    printf("%s:" , str);
     char command[40];
+    printf("%s:" , str);
     scanf("%s",command);
     if (strcmp(command, "help") == 0)
     {
@@ -39,8 +65,18 @@ void menu_code(char *str)
     }
     else if (strcmp(command, "snake") == 0)
     {
-        printf("\e[1;1H\e[2J");
-        game_snake(str);
+        printf("please put a number between 10 and 90\n");
+        scanf("%s",command);
+        if (ft_atoi(command) < 9 || ft_atoi(command) > 91)
+        {
+            printf("\ntoo big or small of a number\n");
+            menu_code(str);
+        }
+        else
+        {
+            printf("\e[1;1H\e[2J");
+            game_snake(str,ft_atoi(command));
+        }
     }
     else if (strcmp(command, "games") == 0)
     {
@@ -48,7 +84,6 @@ void menu_code(char *str)
         printf("snake\n");
         printf("\n");
         menu_code(str);
-
     }
     else
     {
