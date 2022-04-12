@@ -14,12 +14,10 @@ void printMap(int st[size_screen][size_screen], int x , int y,int snakeInfo)
 		{
 			if (st[x][y] +1 == snakeInfo)
 				write(1, "H", 1);
-			else if (y == 0 || y == size_screen -1) 
-				write(1, "-", 1);
-			else if (x == 0 || x == size_screen -1)
-				write(1, "|", 1);
+			else if (y == 0 || y == size_screen -1 || x == 0 || x == size_screen -1)
+				write(1, "x", 1);
 			else if (st[x][y] > 0)
-				write(1, "O", 1);
+				write(1, "o", 1);
 			else if (st[x][y] == 0)
 				write(1, " ", 1);
 			write(1, " ", 1);
