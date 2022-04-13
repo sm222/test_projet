@@ -54,7 +54,26 @@ void lose(int *point, char *str)
     menu_code(str);
 }
 
-
+int collision(int scr[size_screen][size_screen],int x, int y)
+{
+	if (x == 0 || x == size_screen -1 || y == 0 || y == size_screen -1)
+		return(1);
+	else if(scr[x][y] > 0)
+		return(1);
+	else
+		return(0);
+}
+/*
+old
+case 'w':
+				snakeInfo[2]--;
+				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
+					gameOn = 0;
+				clean(*scr, 0 ,0);
+				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
+				snakeInfo[0]++;
+				snakeInfo[3]++;
+*/
 
 void game_snake(char *name, int game_size)
 {
@@ -92,7 +111,7 @@ void game_snake(char *name, int game_size)
 		{
 			case 'w':
 				snakeInfo[2]--;
-				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
+				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 1)
 					gameOn = 0;
 				clean(*scr, 0 ,0);
 				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
@@ -102,7 +121,7 @@ void game_snake(char *name, int game_size)
 
 			case 'a':
 				snakeInfo[1]--;
-				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[1] == 0 || snakeInfo[1] == size_screen -1)
+				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 1)
 					gameOn = 0;
 				clean(*scr, 0 ,0);
 				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
@@ -112,7 +131,7 @@ void game_snake(char *name, int game_size)
 
 			case 'd':
 				snakeInfo[1]++;
-				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[1] == 0 || snakeInfo[1] == size_screen -1)
+				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 1)
 					gameOn = 0;
 				clean(*scr, 0 ,0);
 				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
@@ -122,7 +141,7 @@ void game_snake(char *name, int game_size)
 
 			case 's':
 				snakeInfo[2]++;
-				if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
+				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 1)
 					gameOn = 0;
 				clean(*scr, 0 ,0);
 				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];

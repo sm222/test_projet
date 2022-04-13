@@ -36,7 +36,7 @@ void art(void)
     printf("                                                                                                    \n");
 }
 
-void sing(void)
+void signature(void)
 {
     printf("\e[1;1H\e[2J");
     printf(" ::::::::  ::::    ::::   ::::::::   ::::::::   ::::::::  \n");
@@ -89,6 +89,7 @@ void menu_code(char *str)
         printf("clear - clear console\n");
         printf("loading - test\n");
         printf("games - game list\n");
+        printf("signature - show the sm222\n");
         printf("exit - close the programe\n");
         printf("\n");
         menu_code(str);
@@ -117,7 +118,7 @@ void menu_code(char *str)
     {
         printf("please put a number between 10 and 50\n");
         scanf("%s",command);
-        if (ft_atoi(command) < 9 || ft_atoi(command) > 51)
+        if (ft_atoi(command) < 4 || ft_atoi(command) > 51)
         {
             printf("\ntoo big or small of a number\n");
             menu_code(str);
@@ -141,9 +142,9 @@ void menu_code(char *str)
         printf("site use : https://www.text-image.com/convert/\n\n");
         menu_code(str);
     }
-    else if (strcmp(command, "sing") == 0)
+    else if (strcmp(command, "signature") == 0)
     {
-        sing();
+        signature();
         menu_code(str);
     }
     else if (strcmp(command, "loading") == 0)
@@ -168,7 +169,7 @@ void menu_code(char *str)
 
 void main()
 {
-    sing();
+    signature();
     menu_code("user");
     return;
 }
