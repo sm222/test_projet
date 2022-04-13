@@ -118,7 +118,7 @@ void menu_code(char *str)
     {
         printf("please put a number between 10 and 50\n");
         scanf("%s",command);
-        if (ft_atoi(command) < 4 || ft_atoi(command) > 51)
+        if (ft_atoi(command) < 10 || ft_atoi(command) > 51)
         {
             printf("\ntoo big or small of a number\n");
             menu_code(str);
