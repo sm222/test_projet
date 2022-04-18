@@ -1,40 +1,6 @@
+#include <stdio.h>
 #include <string.h>
 void game_snake(char *name, int game_size);
-
-void art(void)
-{
-    printf("                                                                                                    \n");
-    printf("                                                     ..........                                     \n");
-    printf("                                 !5GGBBBBB#Y:    .?GB#####&BG##BBBBBBG?                             \n");
-    printf("                              .?B@@@@@@@@&?.     ^@@@@@@@&Y:7@@@@@@@@@J                             \n");
-    printf("                             ^B@@@@@@@@&J.       !@@@@@G?:  7@@@@@@@@@J                             \n");
-    printf("                            ?@@@@@@@@&5:         !@@&P~     :&@@@@@@@@G                             \n");
-    printf("                          ~G@@@@@@@@P:           :Y!:       :&@@@@@@@@G                             \n");
-    printf("                        ~P@@@@@@@@5^                       ^B@@@@@@@@G:                             \n");
-    printf("                     .7G@@@@@@@#Y^        ..............:7P&@@@@@@#Y~                               \n");
-    printf("                   :J#@@@@@@@#Y~:^^~~~!!!!!!777777777!?P&@@@@@@@&Y7~~~~^^:..                        \n");
-    printf("                 ~P&@@@@@@@BY777????????????????????JP&@@@@@@@&PJ????????77!!~^^:.                  \n");
-    printf("            ..:7G@@@@@@@@BY?JJJJJYYYYYJJJJJ??!~~~~~Y&@@@@@@@@5!!!!!7777????????77!!~^:.             \n");
-    printf("         .^~!7?&@@@@@@@@@##&&&&&@@@@@@@@@@@@@?~!!!!B@@@@@@@@&!~~~~~~^!57~!!!7????????7!~            \n");
-    printf("        .!!!77J&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Y7????#@@@@@@@@&?777!!75&@Y~~~~~~~!77?7!!!!.           \n");
-    printf("        :!!~^~?@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@P7???J&@@@@@@@@#??77?G&@@@P77777!!~~!~^~!!!.           \n");
-    printf("        ~!!~^!7&@@@@@@@@@@@@@&&@&@@@@@@@@@@@@G?JJJP@@@@@@@@@G??JP&@@@@@Y7????7!!!!!^~!!!.           \n");
-    printf("        ~!!^~!!?J?7JYJYYJJJ??JJYYYYG@@@@@@@@@PJJJJG@@@@@@@@@G5G&@@&&&&#J?777!!^~!!!^~!!!.           \n");
-    printf("       .!!!^~!!!!^^!!!!!!!^^!!!7777G@@@@@@@@@5JJJJJYYY5555555YYYYYYYJJ?!!!!!!!~^~!!~~!!!.           \n");
-    printf("       .!!!^~!!!!^~!!!!!!!~~!!!!!!!P@@@@@@@@@5?JJJJ??????????????777!!~^!!!!!!!^~!!~^!!!.           \n");
-    printf("       .!!!^~!!!~^!!!!!!!!^~!!!!!!!B@@@@@@@@@J!!!!!!!!!!~^!!!!!!!!!!!!~^~!!!!!!^~!!~^!!~            \n");
-    printf("       .!!!^~!!!~^!!!!!!!~^~!!!!!!!P##&###&##J!!!!?!!!!!~^~!!!77!!!!!!~^7!!!!!!^~!!~^!!~            \n");
-    printf("       .!!!^~!!!~~!!!!!!!~^~!!!!!!!!!!!~~!!!!!!!!?#7!!!!!^~!77J?!!77!!!!??!!!!!~~!!~^!!~            \n");
-    printf("        !!~^~!!!^~!!!!!!!~^!!!!!!!!!!!!~^!!!!!!!!7B7!!!YJ??!5J??!JY?Y!YJ7?!?Y?Y~~!!~^!!^            \n");
-    printf("        ~!~^!!!!^~!!!!!!!~^!!!!!!!!!!!!~^!!!!!!!!!BJ!!!5B?^~GJ??!Y5YP!PJ!7!?#Y!^~!!~^!!:            \n");
-    printf("        :~~~!!!!^~!!!!!!!~^!!!!!!!!!!!!~^!!!!!!!!!GY!!!J7J?~YJJ?!YY?Y7JJ??!???Y!~!!!^:              \n");
-    printf("          ..:^~~^~!!!!!!!~^!!!!!!!!!!!!~^~!!!!!!!!B?!!!!!!~^!!7!!!!!!!!!~!!!!!!~~!~:                \n");
-    printf("                 ..:^~~!!~^!!!!!!!!!!!!~^~!!!!!!!!7!!!!!!!~^!!!!!!!!!!!!^~!!!!!^^:                  \n");
-    printf("                        ..:^~~!!!!!!!!!!^~!!!!!!!!!!!!!!!!~^~!!!!!!!!!!!^~!~~^:.                    \n");
-    printf("                               ..::^^~~~^~!!!!!!!!!!!!!!!!~^~!!!~~~~~^^:...                         \n");
-    printf("                                          ......:::::::::.....                                      \n");
-    printf("                                                                                                    \n");
-}
 
 void signature(void)
 {
@@ -85,7 +51,6 @@ void menu_code(char *str)
         printf("help list\n");
         printf("\nhelp - give all the commands line\n");
         printf("change_user - change the name of the user\n");
-        printf("art - show art of the 42\n");
         printf("clear - clear console\n");
         printf("loading - test\n");
         printf("games - game list\n");
@@ -136,27 +101,9 @@ void menu_code(char *str)
         printf("\n");
         menu_code(str);
     }
-    else if (strcmp(command, "art") == 0)
-    {
-        art();
-        printf("site use : https://www.text-image.com/convert/\n\n");
-        menu_code(str);
-    }
     else if (strcmp(command, "signature") == 0)
     {
         signature();
-        menu_code(str);
-    }
-    else if (strcmp(command, "loading") == 0)
-    {
-        for (size_t i = 0; i <= 100; i++)
-        {
-            printf("loading %d", i);
-            sleep(1);
-            i = i + 4;
-            printf("\r");
-        }
-        printf("\n");
         menu_code(str);
     }
     else
@@ -166,10 +113,9 @@ void menu_code(char *str)
     }
 }
 
-
-void main()
+int main(void)
 {
     signature();
     menu_code("user");
-    return;
+    return(0);
 }
