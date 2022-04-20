@@ -1,53 +1,42 @@
 #include <stdio.h>
 #include <unistd.h>
-static int size_screen = 10;
-/*
-old code only use as referance.
-void clean(int st[size_screen][size_screen], int x , int y)
+static int size_screen;
+struct snake
 {
-	x = 0; 
-	y = 0;
-	while (y < size_screen)
-	{
-		while (x < size_screen)
-		{
-			if (st[x][y] > 0)
-				st[x][y]--;
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-}
-
-case 'w':
-	snakeInfo[2]--;
-	if (scr[snakeInfo[1]][snakeInfo[2]] > 0 || snakeInfo[2] == 0 || snakeInfo[2] == size_screen -1)
-		gameOn = 0;
-	clean(*scr, 0 ,0);
-	scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-	snakeInfo[0]++;
-	snakeInfo[3]++;
-
-*/
+    int x;
+    int y;
+    int snakeSize;
+    int score;
+    int gameOn;
+};
 
 void menu_code(char *str);
 
-void printMap(int st[size_screen][size_screen], int x , int y,int snakeInfo)
+void lose(int point, char *str)
 {
-	x = 0, y = 0;
 	write(1, "\e[1;1H\e[2J", 10);
-	while (y < size_screen)
+	printf("the bord was %d, you lose at %d points\n",size_screen , point);
+    menu_code(str);
+}
+
+void image(int scr[size_screen][size_screen], int size)
+{
+	int x;
+	int y;
+	write(1, "\e[1;1H\e[2J", 10);
+	x = 0;
+	y = 0;
+	while(y < size_screen)
 	{
 		while (x < size_screen)
 		{
-			if (st[x][y] +1 == snakeInfo)
+			if (scr[x][y] == size)
 				write(1, "H", 1);
-			else if (y == 0 || y == size_screen -1 || x == 0 || x == size_screen -1)
+			else if (scr[x][y] > 0 && scr[x][y] != size)
+				write(1, "o" , 1);
+			else if (x == 0 || x == size_screen -1 || y == 0 || y == size_screen -1)
 				write(1, "x", 1);
-			else if (st[x][y] > 0)
-				write(1, "o", 1);
-			else if (st[x][y] == 0)
+			else if (scr[x][y] == 0)
 				write(1, " ", 1);
 			write(1, " ", 1);
 			x++;
@@ -56,126 +45,90 @@ void printMap(int st[size_screen][size_screen], int x , int y,int snakeInfo)
 		x = 0;
 		y++;
 	}
-	write(1, "wasd to move, x to leave\n", 26);
+	write(1,"aswd to move, x to exit\n", 25);
 }
 
-void lose(int *point, char *str)
+void mouve(int game[size_screen][size_screen], char key, int dir,struct snake *info)
 {
-	write(1, "\e[1;1H\e[2J", 10);
-	printf("the bord was %d, you lose at %d points\n",size_screen , point[3]);
-    menu_code(str);
-}
-
-int collision(int scr[size_screen][size_screen],int x, int y)
-{
-	if (x == 0 || x == size_screen -1 || y == 0 || y == size_screen -1)
-		return(0);
-	else if(scr[x][y] > 0)
-		return(0);
+	int x;
+	int y;
+	if (key == 'w' || key == 's')
+		info->y = info->y + dir;
 	else
-	{	
-		x = 0;
-		y = 0;
+		info->x = info->x + dir;
+	if (game[info->x][info->y] > 0 || info->x == 0 || info->x == size_screen -1 || info->y == 0 || info->y == size_screen -1) 
+		info->gameOn = 0;
+	else
+		info->score++;
+	game[info->x][info->y] = info->snakeSize +1;
+	while (y < size_screen)
+	{
 		while (x < size_screen)
 		{
-			while(y < size_screen)
-			{
-				if (scr[x][y] > 0)
-					scr[x][y]--; 
-				y++;
-			}
-			y = 0;
+			if (game[x][y] > 0)
+				game[x][y]--;
 			x++;
 		}
-		
-		return(1);
+		x = 0;
+		y++;
 	}
+	
 }
 
 void game_snake(char *name, int game_size)
 {
-	size_screen = game_size; 
+	size_screen = game_size;//don't move that one 
 	int scr[size_screen][size_screen];
-	int gameOn;
-	int snakeInfo[5]; //0 is size,1 is x 2 is y, 3 is score 
+    struct snake snakeInfo;
 	char chr;
-
+	snakeInfo.score = 0;
+	snakeInfo.snakeSize = 5;
+	snakeInfo.x = 0, snakeInfo.y = 0;
     printf("\e[1;1H\e[2J");
-	snakeInfo[3] = 0; // score start at 0
-	snakeInfo[0] = 2; // snake size start at 1
-	snakeInfo[1] = 0, snakeInfo[2] = 0;
-	while (snakeInfo[2] < size_screen)
+	while (snakeInfo.y < size_screen)
 	{
-		while (snakeInfo[1] < size_screen)
+		while (snakeInfo.x < size_screen)
 		{
-			scr[snakeInfo[1]][snakeInfo[2]] = 0;		
-			snakeInfo[1]++;
+			scr[snakeInfo.x][snakeInfo.y] = 0;		
+			snakeInfo.x++;
 		}
-		snakeInfo[1] = 0;	
-		snakeInfo[2]++;
+		snakeInfo.x = 0;	
+		snakeInfo.y++;
 	}
-	scr[size_screen / 2][size_screen / 2] = snakeInfo[0];
-	snakeInfo[1] = size_screen / 2; //x
-	snakeInfo[2] = size_screen / 2; //y
-	gameOn = 1;
-	
-	while (gameOn == 1)
+	scr[size_screen / 2][size_screen / 2] = snakeInfo.snakeSize;
+	snakeInfo.x = size_screen / 2;
+	snakeInfo.y = size_screen / 2;
+	snakeInfo.gameOn = 1;
+	while (snakeInfo.gameOn == 1)
 	{
-		write(1, "\n", 1);
-		printMap(scr, snakeInfo[1], snakeInfo[2], snakeInfo[0]);
-		scanf("%c", &chr);
-		switch(chr)
+		image(scr, snakeInfo.snakeSize);
+		scanf("%1c", &chr);
+		switch (chr)
 		{
-			case 'w':
-				snakeInfo[2]--;
-				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 0)
-					gameOn = 0;
-				else
-					snakeInfo[3]++;
-				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-				snakeInfo[0]++;
-				break;
+		case 'w':
+			mouve(scr ,'w', -1 , &snakeInfo);
+			break;
 
-			case 'a':
-				snakeInfo[1]--;
-				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 0)
-					gameOn = 0;
-				else
-					snakeInfo[3]++;
-				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-				snakeInfo[0]++;
-				break;
+		case 's':
+			mouve(scr ,'s', 1 , &snakeInfo);
+			break;
 
-			case 'd':
-				snakeInfo[1]++;
-				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 0)
-					gameOn = 0;
-				else
-					snakeInfo[3]++;
-				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-				snakeInfo[0]++;
-				break;
+		case 'a':
+			mouve(scr ,'a', -1 , &snakeInfo);
+			break;
 
-			case 's':
-				snakeInfo[2]++;
-				if (collision(scr , snakeInfo[1], snakeInfo[2]) == 0)
-					gameOn = 0;
-				else
-					snakeInfo[3]++;
-				scr[snakeInfo[1]][snakeInfo[2]] = snakeInfo[0];
-				snakeInfo[0]++;
-				
-				break;
-				
-			case 'x':
-				gameOn = 0;
-				break;
+		case 'd':
+			mouve(scr ,'d', 1 , &snakeInfo);
+			break;
 
-			default:
-				break;
-		}
+		case 'x':
+			snakeInfo.gameOn = 0;
+			break;
 		
+		default:
+			break;
+		}
 	}
-	lose(snakeInfo, name);
-	return (0);
+	lose(snakeInfo.score, name);
+	return;
 }
