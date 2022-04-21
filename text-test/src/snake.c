@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <time.h>
 static int size_screen;
 struct snake
 {
@@ -9,21 +11,38 @@ struct snake
     int score;
     int gameOn;
 };
+struct apple
+{
+	int x;
+	int y;
+	int onOff;
+};
 
 void menu_code(char *str);
 
-void lose(int point, char *str)
+int num(void)
+{
+	int lower = 0;
+	int upper = size_screen -1;
+	
+    srand(time(0));
+    int numb = (rand() % (upper - lower + 1)) + lower;
+    return(numb);
+}
+
+void losee(int point, char *str)
 {
 	write(1, "\e[1;1H\e[2J", 10);
 	printf("the bord was %d, you lose at %d points\n",size_screen , point);
     menu_code(str);
 }
 
+//print the game on the terminal
 void image(int scr[size_screen][size_screen], int size)
 {
 	int x;
 	int y;
-	write(1, "\e[1;1H\e[2J", 10);
+	write(1,"\e[1;1H\e[2J", 10);
 	x = 0;
 	y = 0;
 	while(y < size_screen)
@@ -31,11 +50,13 @@ void image(int scr[size_screen][size_screen], int size)
 		while (x < size_screen)
 		{
 			if (scr[x][y] == size)
-				write(1, "H", 1);
+				write(1, "H", 1);	//head of the snake
 			else if (scr[x][y] > 0 && scr[x][y] != size)
-				write(1, "o" , 1);
+				write(1, "o" , 1); //body of the snake
+			else if (scr[x][y] == -1)
+				write(1 , "A" , 1);	//apple
 			else if (x == 0 || x == size_screen -1 || y == 0 || y == size_screen -1)
-				write(1, "x", 1);
+				write(1, "X", 1);	//wall
 			else if (scr[x][y] == 0)
 				write(1, " ", 1);
 			write(1, " ", 1);
@@ -45,10 +66,9 @@ void image(int scr[size_screen][size_screen], int size)
 		x = 0;
 		y++;
 	}
-	write(1,"aswd to move, x to exit\n", 25);
 }
 
-void mouve(int game[size_screen][size_screen], char key, int dir,struct snake *info)
+void mouve(int game[size_screen][size_screen], char key, int dir,struct snake *info,struct apple *fruit)
 {
 	int x;
 	int y;
@@ -56,12 +76,18 @@ void mouve(int game[size_screen][size_screen], char key, int dir,struct snake *i
 		info->y = info->y + dir;
 	else
 		info->x = info->x + dir;
-	if (game[info->x][info->y] > 0 || info->x == 0 || info->x == size_screen -1 || info->y == 0 || info->y == size_screen -1) 
+	if (game[info->x][info->y] > 0 || info->x == 0 || info->x == size_screen -1 || info->y == 0 || info->y == size_screen -1) //look for obstacle
 		info->gameOn = 0;
+	else if (game[info->x][info->y] == -1) //if get a apple add 5 poins
+		{
+			fruit->onOff = 0;
+			info->snakeSize++;
+			info->score = info->score + 5;
+		}
 	else
-		info->score++;
+	{}
 	game[info->x][info->y] = info->snakeSize +1;
-	while (y < size_screen)
+	while (y < size_screen) // clean the bord
 	{
 		while (x < size_screen)
 		{
@@ -72,7 +98,19 @@ void mouve(int game[size_screen][size_screen], char key, int dir,struct snake *i
 		x = 0;
 		y++;
 	}
-	
+}
+
+void apples(struct apple *pomme ,int gamebord[size_screen][size_screen])
+{
+	pomme->x = num() +1;
+	pomme->y = num() +1;
+	if (gamebord[pomme->x][pomme->y] == 0) //look if it can be fit
+		if (pomme->x != 0 && pomme->y != 0)
+			if(pomme->x < size_screen -1 && pomme->y < size_screen -1) 
+			{
+				gamebord[pomme->x][pomme->y] = -1;
+				pomme->onOff = 1;
+			}
 }
 
 void game_snake(char *name, int game_size)
@@ -80,7 +118,12 @@ void game_snake(char *name, int game_size)
 	size_screen = game_size;//don't move that one 
 	int scr[size_screen][size_screen];
     struct snake snakeInfo;
+	struct apple appleInfo;
 	char chr;
+
+	appleInfo.x = 0 , appleInfo.y = 0;
+	appleInfo.onOff = 0;
+	//
 	snakeInfo.score = 0;
 	snakeInfo.snakeSize = 5;
 	snakeInfo.x = 0, snakeInfo.y = 0;
@@ -101,24 +144,28 @@ void game_snake(char *name, int game_size)
 	snakeInfo.gameOn = 1;
 	while (snakeInfo.gameOn == 1)
 	{
+		while (appleInfo.onOff == 0) //try to fit a apple on the map
+			apples(&appleInfo, scr);
 		image(scr, snakeInfo.snakeSize);
+		printf("___________________\nscore = %d\n", snakeInfo.score);
+		write(1,"aswd to move, x to exit\n", 25);
 		scanf("%1c", &chr);
 		switch (chr)
 		{
 		case 'w':
-			mouve(scr ,'w', -1 , &snakeInfo);
+			mouve(scr ,'w', -1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 's':
-			mouve(scr ,'s', 1 , &snakeInfo);
+			mouve(scr ,'s', 1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 'a':
-			mouve(scr ,'a', -1 , &snakeInfo);
+			mouve(scr ,'a', -1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 'd':
-			mouve(scr ,'d', 1 , &snakeInfo);
+			mouve(scr ,'d', 1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 'x':
@@ -129,6 +176,6 @@ void game_snake(char *name, int game_size)
 			break;
 		}
 	}
-	lose(snakeInfo.score, name);
+	losee(snakeInfo.score, name);
 	return;
 }
