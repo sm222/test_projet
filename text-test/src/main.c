@@ -81,9 +81,9 @@ void menu_code(char *str)
     }
     else if (strcmp(command, "snake") == 0)
     {
-        printf("please put a number between 10 and 50\n");
+        printf("please put a number between 10 and 45\n");
         scanf("%s",command);
-        if (ft_atoi(command) < 10 || ft_atoi(command) > 51)
+        if (ft_atoi(command) < 10 || ft_atoi(command) > 45)
         {
             printf("\ntoo big or small of a number\n");
             menu_code(str);
