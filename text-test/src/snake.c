@@ -25,12 +25,11 @@ int num(void)
 	int lower = 0;
 	int upper = size_screen -1;
 	
-    srand(time(0));
     int numb = (rand() % (upper - lower + 1)) + lower;
     return(numb);
 }
 
-void losee(int point, char *str)
+void loose(int point, char *str)
 {
 	write(1, "\e[1;1H\e[2J", 10);
 	printf("the bord was %d, you lose at %d points\n",size_screen , point);
@@ -68,7 +67,7 @@ void image(int scr[size_screen][size_screen], int size)
 	}
 }
 
-void mouve(int game[size_screen][size_screen], char key, int dir,struct snake *info,struct apple *fruit)
+void move(int game[size_screen][size_screen], char key, int dir,struct snake *info,struct apple *fruit)
 {
 	int x;
 	int y;
@@ -123,6 +122,7 @@ void game_snake(char *name, int game_size)
 
 	appleInfo.x = 0 , appleInfo.y = 0;
 	appleInfo.onOff = 0;
+	srand(time(0));
 	//
 	snakeInfo.score = 0;
 	snakeInfo.snakeSize = 5;
@@ -153,19 +153,19 @@ void game_snake(char *name, int game_size)
 		switch (chr)
 		{
 		case 'w':
-			mouve(scr ,'w', -1 , &snakeInfo, &appleInfo);
+			move(scr ,'w', -1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 's':
-			mouve(scr ,'s', 1 , &snakeInfo, &appleInfo);
+			move(scr ,'s', 1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 'a':
-			mouve(scr ,'a', -1 , &snakeInfo, &appleInfo);
+			move(scr ,'a', -1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 'd':
-			mouve(scr ,'d', 1 , &snakeInfo, &appleInfo);
+			move(scr ,'d', 1 , &snakeInfo, &appleInfo);
 			break;
 
 		case 'x':
@@ -176,6 +176,6 @@ void game_snake(char *name, int game_size)
 			break;
 		}
 	}
-	losee(snakeInfo.score, name);
+	loose(snakeInfo.score, name);
 	return;
 }
