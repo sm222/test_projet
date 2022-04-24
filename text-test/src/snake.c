@@ -1,6 +1,6 @@
 
 
-#include "../snake.h"
+#include "../include/snake.h"
 
 static int size_screen;
 
@@ -56,8 +56,8 @@ void image(int (*scr)[size_screen], int size)
 
 void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct apple *fruit)
 {
-	int x;
-	int y;
+	int x = 0;
+	int y = 0;
 	if (key == 'w' || key == 's')
 		info->y = info->y + dir;
 	else
