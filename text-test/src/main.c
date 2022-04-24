@@ -1,10 +1,19 @@
 #include <stdio.h>
 #include <string.h>
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
+#define CLE "\e[1;1H\e[2J"
 void game_snake(char *name, int game_size);
 
 void signature(void)
 {
-    printf("\e[1;1H\e[2J");
+    printf(BLU);
     printf(" ::::::::  ::::    ::::   ::::::::   ::::::::   ::::::::  \n");
     printf(":+:    :+: +:+:+: :+:+:+ :+:    :+: :+:    :+: :+:    :+: \n");
     printf("+:+        +:+ +:+:+ +:+       +:+        +:+        +:+  \n");
@@ -13,6 +22,7 @@ void signature(void)
     printf("       +#+ +#+       +#+   +#+        +#+        +#+      \n");
     printf("#+#    #+# #+#       #+#  #+#        #+#        #+#       \n");
     printf(" ########  ###       ### ########## ########## ########## \n");
+    printf(RESET);
 }
 
 int	ft_atoi(char *str)
@@ -71,7 +81,7 @@ void menu_code(char *str)
     }
     else if (strcmp(command, "clear") == 0)
     {
-        printf("\e[1;1H\e[2J");
+        printf(CLE);
         menu_code(str);
     }
     else if (strcmp(command, "exit") == 0)
@@ -85,7 +95,7 @@ void menu_code(char *str)
         scanf("%s",command);
         if (ft_atoi(command) < 10 || ft_atoi(command) > 45)
         {
-            printf("\ntoo big or small of a number\n");
+            printf(RED "\n%s"RESET" is not valid\n", command);
             menu_code(str);
         }
         else
@@ -108,13 +118,14 @@ void menu_code(char *str)
     }
     else
     {
-        printf("%s : command not found, try \"help\"\n" , command);
+        printf(RED"%s "RESET": command not found, try "YEL"\"help\"\n"RESET, command);
         menu_code(str);
     }
 }
 
 int main(void)
 {
+    printf(CLE);
     signature();
     menu_code("user");
     return(0);

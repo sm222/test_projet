@@ -2,6 +2,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
 static int size_screen;
 struct snake
 {
@@ -29,15 +37,16 @@ int num(void)
     return(numb);
 }
 
-void loose(int point, char *str)
+void lost(int point, char *str)
 {
 	write(1, "\e[1;1H\e[2J", 10);
 	printf("the bord was %d, you lose at %d points\n",size_screen , point);
     menu_code(str);
+	return;
 }
 
 //print the game on the terminal
-void image(int scr[size_screen][size_screen], int size)
+void image(int (*scr)[size_screen], int size)
 {
 	int x;
 	int y;
@@ -49,13 +58,13 @@ void image(int scr[size_screen][size_screen], int size)
 		while (x < size_screen)
 		{
 			if (scr[x][y] == size)
-				write(1, "H", 1);	//head of the snake
+				write(1, "\x1B[32mH\x1B[0m", 11);	//head of the snake
 			else if (scr[x][y] > 0 && scr[x][y] != size)
-				write(1, "o" , 1); //body of the snake
+				write(1, "\x1B[32mo\x1B[0m" , 11); //body of the snake
 			else if (scr[x][y] == -1)
-				write(1 , "A" , 1);	//apple
+				write(1 , "\x1B[31mA\x1B[0m" , 11);	//apple
 			else if (x == 0 || x == size_screen -1 || y == 0 || y == size_screen -1)
-				write(1, "X", 1);	//wall
+				write(1, "\x1B[35mX\x1B[0m", 11);	//wall
 			else if (scr[x][y] == 0)
 				write(1, " ", 1);
 			write(1, " ", 1);
@@ -67,7 +76,7 @@ void image(int scr[size_screen][size_screen], int size)
 	}
 }
 
-void move(int game[size_screen][size_screen], char key, int dir,struct snake *info,struct apple *fruit)
+void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct apple *fruit)
 {
 	int x;
 	int y;
@@ -91,7 +100,7 @@ void move(int game[size_screen][size_screen], char key, int dir,struct snake *in
 		while (x < size_screen)
 		{
 			if (game[x][y] > 0)
-				game[x][y]--;
+				game[x][y] = game[x][y] -1;
 			x++;
 		}
 		x = 0;
@@ -123,7 +132,7 @@ void game_snake(char *name, int game_size)
 	appleInfo.x = 0 , appleInfo.y = 0;
 	appleInfo.onOff = 0;
 	srand(time(0));
-	//
+
 	snakeInfo.score = 0;
 	snakeInfo.snakeSize = 5;
 	snakeInfo.x = 0, snakeInfo.y = 0;
@@ -148,7 +157,7 @@ void game_snake(char *name, int game_size)
 			apples(&appleInfo, scr);
 		image(scr, snakeInfo.snakeSize);
 		printf("___________________\nscore = %d\n", snakeInfo.score);
-		write(1,"aswd to move, x to exit\n", 25);
+		write(1,"\x1B[33maswd\x1B[0m to \x1B[32mmove\x1B[0m, \x1B[31mx to exit\x1B[0m\n", 52);
 		scanf("%1c", &chr);
 		switch (chr)
 		{
@@ -176,6 +185,6 @@ void game_snake(char *name, int game_size)
 			break;
 		}
 	}
-	loose(snakeInfo.score, name);
+	lost(snakeInfo.score, name);
 	return;
 }
