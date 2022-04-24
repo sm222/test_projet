@@ -1,30 +1,8 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <time.h>
-#define RED   "\x1B[31m"
-#define GRN   "\x1B[32m"
-#define YEL   "\x1B[33m"
-#define BLU   "\x1B[34m"
-#define MAG   "\x1B[35m"
-#define CYN   "\x1B[36m"
-#define WHT   "\x1B[37m"
-#define RESET "\x1B[0m"
+
+
+#include "../snake.h"
+
 static int size_screen;
-struct snake
-{
-    int x;
-    int y;
-    int snakeSize;
-    int score;
-    int gameOn;
-};
-struct apple
-{
-	int x;
-	int y;
-	int onOff;
-};
 
 void menu_code(char *str);
 
@@ -32,16 +10,16 @@ int num(void)
 {
 	int lower = 0;
 	int upper = size_screen -1;
-	
-    int numb = (rand() % (upper - lower + 1)) + lower;
-    return(numb);
+
+	int numb = (rand() % (upper - lower + 1)) + lower;
+	return(numb);
 }
 
 void lost(int point, char *str)
 {
 	write(1, "\e[1;1H\e[2J", 10);
 	printf("the bord was %d, you lose at %d points\n",size_screen , point);
-    menu_code(str);
+	menu_code(str);
 	return;
 }
 
@@ -125,8 +103,8 @@ void game_snake(char *name, int game_size)
 {
 	size_screen = game_size;//don't move that one 
 	int scr[size_screen][size_screen];
-    struct snake snakeInfo;
-	struct apple appleInfo;
+	snake snakeInfo;
+	apple appleInfo;
 	char chr;
 
 	appleInfo.x = 0 , appleInfo.y = 0;
@@ -136,7 +114,7 @@ void game_snake(char *name, int game_size)
 	snakeInfo.score = 0;
 	snakeInfo.snakeSize = 5;
 	snakeInfo.x = 0, snakeInfo.y = 0;
-    printf("\e[1;1H\e[2J");
+	printf("\e[1;1H\e[2J");
 	while (snakeInfo.y < size_screen)
 	{
 		while (snakeInfo.x < size_screen)
