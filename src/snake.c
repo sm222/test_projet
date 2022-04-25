@@ -78,7 +78,7 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 		while (x < size_screen)
 		{
 			if (game[x][y] > 0)
-				game[x][y] = game[x][y] -1;
+				game[x][y]--;
 			x++;
 		}
 		x = 0;
