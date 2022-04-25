@@ -166,3 +166,5 @@ void game_snake(char *name, int game_size)
 	lost(snakeInfo.score, name);
 	return;
 }
+
+//im so happy it work
