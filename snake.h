@@ -36,7 +36,7 @@ typedef struct apple {
 
 static int size_screen;
 
-int		num(void);
+int 	num(int upper);
 void	lost(int point, char *str);
 void	image(int (*scr)[size_screen], int size);
 void	move(int (*game)[size_screen], char key, int dir, snake *info, apple *fruit);

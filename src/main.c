@@ -54,7 +54,6 @@ void menu_code(char *str)
 		printf("\nhelp - give all the commands line\n");
 		printf("change_user - change the name of the user\n");
 		printf("clear - clear console\n");
-		printf("loading - test\n");
 		printf("games - game list\n");
 		printf("signature - show the sm222\n");
 		printf("exit - close the programe\n");

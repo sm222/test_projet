@@ -6,11 +6,9 @@ static int size_screen;
 
 void menu_code(char *str);
 
-int num(void)
+int num(int upper)
 {
 	int lower = 0;
-	int upper = size_screen -1;
-
 	int numb = (rand() % (upper - lower + 1)) + lower;
 	return(numb);
 }
@@ -26,11 +24,10 @@ void lost(int point, char *str)
 //print the game on the terminal
 void image(int (*scr)[size_screen], int size)
 {
-	int x;
-	int y;
+	int x = 0;
+	int y = 0;
 	write(1,"\e[1;1H\e[2J", 10);
-	x = 0;
-	y = 0;
+	
 	while(y < size_screen)
 	{
 		while (x < size_screen)
@@ -73,7 +70,7 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 	else
 	{}
 	game[info->x][info->y] = info->snakeSize +1;
-	while (y < size_screen) // clean the bord
+	while (y < size_screen) // clean the board
 	{
 		while (x < size_screen)
 		{
@@ -88,8 +85,8 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 
 void apples(struct apple *pomme ,int gamebord[size_screen][size_screen])
 {
-	pomme->x = num() +1;
-	pomme->y = num() +1;
+	pomme->x = num( size_screen);
+	pomme->y = num( size_screen);
 	if (gamebord[pomme->x][pomme->y] == 0) //look if it can be fit
 		if (pomme->x != 0 && pomme->y != 0)
 			if(pomme->x < size_screen -1 && pomme->y < size_screen -1) 
@@ -112,7 +109,7 @@ void game_snake(char *name, int game_size)
 	srand(time(0));
 
 	snakeInfo.score = 0;
-	snakeInfo.snakeSize = 5;
+	snakeInfo.snakeSize = size_screen /2;//snake size start at 2/ of the game board 
 	snakeInfo.x = 0, snakeInfo.y = 0;
 	printf("\e[1;1H\e[2J");
 	while (snakeInfo.y < size_screen)
