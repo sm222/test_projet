@@ -1,17 +1,8 @@
 
 
-#include "../snake.h"
+#include "../include.h"
 
 static int size_screen;
-
-void menu_code(char *str);
-
-int num(int upper)
-{
-	int lower = 0;
-	int numb = (rand() % (upper - lower + 1)) + lower;
-	return(numb);
-}
 
 void lost(int point, char *str)
 {
@@ -85,8 +76,8 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 
 void apples(struct apple *pomme ,int gamebord[size_screen][size_screen])
 {
-	pomme->x = num( size_screen);
-	pomme->y = num( size_screen);
+	pomme->x = rNum( size_screen);
+	pomme->y = rNum( size_screen);
 	if (gamebord[pomme->x][pomme->y] == 0) //look if it can be fit
 		if (pomme->x != 0 && pomme->y != 0)
 			if(pomme->x < size_screen -1 && pomme->y < size_screen -1) 

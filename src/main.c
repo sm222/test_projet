@@ -1,100 +1,145 @@
 
 
-
-#include "../snake.h"
-
-void signature(void)
-{
-	printf(BLU);
-	printf(" ::::::::  ::::    ::::   ::::::::   ::::::::   ::::::::  \n");
-	printf(":+:    :+: +:+:+: :+:+:+ :+:    :+: :+:    :+: :+:    :+: \n");
-	printf("+:+        +:+ +:+:+ +:+       +:+        +:+        +:+  \n");
-	printf("+#++:++#++ +#+  +:+  +#+     +#+        +#+        +#+    \n");
-	printf("       +#+ +#+       +#+   +#+        +#+        +#+      \n");
-	printf("       +#+ +#+       +#+   +#+        +#+        +#+      \n");
-	printf("#+#    #+# #+#       #+#  #+#        #+#        #+#       \n");
-	printf(" ########  ###       ### ########## ########## ########## \n");
-	printf(RESET);
-}
-
-int	ft_atoi(char *str)
-{
-	int	p;
-	int	num;
-	int	min;
-
-	min = 1;
-	p = 0;
-	num = 0;
-	while (str[p] == '\t' || str[p] == '\n' || str[p] == '\v'
-		|| str[p] == '\f' || str[p] == '\r' || str[p] == ' ')
-		p++;
-	while (str[p] == '-' || str[p] == '+')
-	{
-		if (str[p] == '-')
-			min = min * -1;
-		p++;
-	}
-	while (str[p] >= '0' && str[p] <= '9')
-	{
-		num = num * 10 + (str[p] - 48);
-		p++;
-	}
-	return (num * min);
-}
+#include "../include.h"
 
 void menu_code(char *str)
 {
-	char command[40];
-	printf("%s:" , str);
-	scanf("%s",command);
-	if (strcmp(command, "help") == 0)
+	int size = 40;
+	char command[size];
+	char arg;// use to look at arg int the function
+	int agr_number = 0;
+	int arp_p;
+	char arg_v[21];
+	int i = 0;
+	while(arg_v[i])
+		arg_v[i++] = ' ';
+
+	print_str(str);
+	write(1 , ":" , 1);
+
+	get_str(command, size);
+	clear_str(command);
+	
+	if (look_for_func(command,("help")) == 1)
 	{
-		printf("help list\n");
-		printf("\nhelp - give all the commands line\n");
-		printf("change_user - change the name of the user\n");
-		printf("clear - clear console\n");
-		printf("games - game list\n");
-		printf("signature - show the sm222\n");
-		printf("exit - close the programe\n");
-		printf("\n");
-		menu_code(str);
-	}
-	else if (strcmp(command, "change_user") == 0)
-	{
-		printf("type the new user (20 characters max, null to set back to default)\n");
-		scanf("%s",command);
-		if (strcmp(command, "null") == 0)
-			str = ("user");
+		agr_number = number_arg(command,'-');
+		if (get_argP_from_str(command,'-', 1) == 0)
+		{
+			printf("help list\n\n");
+			printf("change user - change the name of the user\n");
+			printf("help - give all the commands line\n");
+			printf("clear - clear console\n");
+			printf("games - game list\n");
+			printf("signature - show the sm222\n");
+			printf("exit - close the programe\n");
+			printf("\n");
+		}
 		else
-			str = command;
+		{
+			while (agr_number > 0)
+			{
+				arp_p = get_argP_from_str(command, '-',agr_number);
+				arg = command[arp_p];
+				give_arg_v(command, arg_v, arp_p + 2);
+				agr_number--;
+				switch (arg)
+				{
+				case 'a':
+					printf("help list -a\n");
+					printf("help -a give all information\n");
+					printf("change user -u change the name of the user directely\n");
+					printf("clear - clear console\n");
+					printf("games - game list\n");
+					printf("signature - show the sm222\n");
+					printf("exit - close the programe\n");
+					printf("\n");
+					break;
+
+				default:
+					printf(YEL "help " RESET"-" RED "%c " RESET "is not a valid argumant\n",arg);
+					break;
+				}
+			}
+		}
 		menu_code(str);
 	}
+
+	if (look_for_func(command,("change user")) == 1)
+	{
+		agr_number = number_arg(command,'-');
+		if (get_argP_from_str(command,'-', 1) == 0)
+		{
+			printf("type the new user (20 characters max, null to set back to default)\n");
+			get_str(command, 21);
+			clear_str(command);
+			if (strcmp(command, "null") == 0)
+				str = ("user");
+			else
+				str = command;
+			menu_code(str);
+		}
+		else
+		{
+			while (agr_number > 0)
+			{
+				arp_p = get_argP_from_str(command, '-',agr_number);
+				arg = command[arp_p];
+				give_arg_v(command, arg_v, arp_p + 2);
+				agr_number--;
+				switch (arg)
+				{
+				case 'u':
+					str = arg_v;
+					break;
+
+				case 'd':
+					str = ("user");
+					break;
+
+				default:
+					printf(YEL "change user " RESET"-" RED "%c " RESET "is not a valid argumant\n",arg);
+					break;
+				}
+			}
+		}
+		menu_code(str);
+	}
+
+
 	else if (strcmp(command, "clear") == 0)
 	{
 		printf(CLE);
 		menu_code(str);
 	}
+
 	else if (strcmp(command, "exit") == 0)
 	{
 		printf("\e[1;1H\e[2J");
 		return;
 	}
-	else if (strcmp(command, "snake") == 0)
+
+	else if (look_for_func(command,("snake")) == 1)
 	{
-		printf("please put a number between 7 and 45\n");
-		scanf("%s",command);
-		if (ft_atoi(command) < 7 || ft_atoi(command) > 45)
+		if (get_argP_from_str(command,'-', 1) == 0)
 		{
-			printf(RED "\n%s"RESET" is not valid\n", command);
-			menu_code(str);
+			printf("please put a number between 7 and 45\n");
+			get_str(command,4);
+			clear_str(command);
+			if (ft_atoi(command) < 7 || ft_atoi(command) > 45)
+			{
+				printf(RED"%s"RESET" is not a valid input\n", command);
+				menu_code(str);
+			}
+			else
+				game_snake(str,ft_atoi(command));
 		}
 		else
 		{
-			printf("\e[1;1H\e[2J");
-			game_snake(str,ft_atoi(command));
+		//add swich here
+		menu_code(str);
 		}
 	}
+
 	else if (strcmp(command, "games") == 0)
 	{
 		printf("Game list - \n");
@@ -102,22 +147,38 @@ void menu_code(char *str)
 		printf("\n");
 		menu_code(str);
 	}
+
 	else if (strcmp(command, "signature") == 0)
 	{
 		signature();
 		menu_code(str);
 	}
+	
+	else if (strcmp(command, "math game") == 0)
+	{
+		math_game(str);
+	}
+
+	else if (strcmp(command, "noise") == 0)
+	{
+		noise(1000,130);
+		menu_code(str);
+	}
+	//default
 	else
 	{
 		printf(RED"%s "RESET": command not found, try "YEL"\"help\"\n"RESET, command);
+		
 		menu_code(str);
 	}
+	
 }
 
 int main(void)
 {
 	printf(CLE);
 	signature();
+	print_str("v1.0, work in progress - type 'help' to start\n");
 	menu_code("user");
 	return(0);
 }
