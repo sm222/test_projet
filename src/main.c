@@ -14,7 +14,7 @@ void menu_code(char *str)
 	while(arg_v[i])
 		arg_v[i++] = ' ';
 	
-	printf(RESET);
+	printf(WHT);
 	print_str(str);
 	write(1 , ":" , 1);
 
