@@ -93,6 +93,7 @@ void game_snake(char *name, int game_size)
 	int scr[size_screen][size_screen];
 	snake snakeInfo;
 	apple appleInfo;
+	char str[5];
 	char chr;
 
 	appleInfo.x = 0 , appleInfo.y = 0;
@@ -124,7 +125,8 @@ void game_snake(char *name, int game_size)
 		image(scr, snakeInfo.snakeSize);
 		printf("___________________\nscore = %d\n", snakeInfo.score);
 		write(1,"\x1B[33maswd\x1B[0m to \x1B[32mmove\x1B[0m, \x1B[31mx to exit\x1B[0m\n", 52);
-		scanf("%1c", &chr);
+		get_str(str,2);
+		chr = str[0];
 		switch (chr)
 		{
 		case 'w':

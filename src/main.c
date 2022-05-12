@@ -1,7 +1,7 @@
 
 
 #include "../include.h"
-
+//UI, use to take input and navigate all the program
 void menu_code(char *str)
 {
 	int size = 40;
@@ -13,7 +13,8 @@ void menu_code(char *str)
 	int i = 0;
 	while(arg_v[i])
 		arg_v[i++] = ' ';
-
+	
+	printf(RESET);
 	print_str(str);
 	write(1 , ":" , 1);
 
@@ -62,6 +63,7 @@ void menu_code(char *str)
 			}
 		}
 		menu_code(str);
+		return;
 	}
 
 	if (look_for_func(command,("change user")) == 1)
@@ -77,6 +79,7 @@ void menu_code(char *str)
 			else
 				str = command;
 			menu_code(str);
+			return;
 		}
 		else
 		{
@@ -89,7 +92,10 @@ void menu_code(char *str)
 				switch (arg)
 				{
 				case 'u':
-					str = arg_v;
+					if (strcmp(arg_v,"") == 0)
+						printf(YEL "change user -u "RESET RED "void " RESET "is not a valid argumant\n");
+					else
+						str = arg_v;
 					break;
 
 				case 'd':
@@ -103,41 +109,66 @@ void menu_code(char *str)
 			}
 		}
 		menu_code(str);
+		return;
 	}
-
 
 	else if (strcmp(command, "clear") == 0)
 	{
 		printf(CLE);
 		menu_code(str);
+		return;
 	}
 
-	else if (strcmp(command, "exit") == 0)
+	else if (look_for_func(command,("exit")) == 1)
 	{
 		printf("\e[1;1H\e[2J");
 		return;
 	}
-
-	else if (look_for_func(command,("snake")) == 1)
+//snake
+if (look_for_func(command,("snake")) == 1)
 	{
+		agr_number = number_arg(command,'-');
 		if (get_argP_from_str(command,'-', 1) == 0)
 		{
 			printf("please put a number between 7 and 45\n");
-			get_str(command,4);
+			get_str(command, 21);
 			clear_str(command);
 			if (ft_atoi(command) < 7 || ft_atoi(command) > 45)
 			{
-				printf(RED"%s"RESET" is not a valid input\n", command);
+				printf(RED"%s "RESET" is not a valid input\n", command);
 				menu_code(str);
+				return;
 			}
-			else
-				game_snake(str,ft_atoi(command));
+			game_snake(str,ft_atoi(command));
+			return;
 		}
 		else
 		{
-		//add swich here
-		menu_code(str);
+			while (agr_number > 0)
+			{
+				arp_p = get_argP_from_str(command, '-',agr_number);
+				arg = command[arp_p];
+				give_arg_v(command, arg_v, arp_p + 2);
+				agr_number--;
+				switch (arg)
+				{
+				case 's':
+					if (ft_atoi(arg_v) < 7 || ft_atoi(arg_v) > 45)
+						printf(YEL "snake -s "RESET RED "%d" RESET "is not a valid size\n", ft_atoi(arg_v));
+					else
+					{
+						game_snake(str,ft_atoi(arg_v));
+						return;
+					}
+					break;
+				default:
+					printf(YEL "snake " RESET"-" RED "%c " RESET "is not a valid argumant\n",arg);
+					break;
+				}
+			}
 		}
+		menu_code(str);
+		return;
 	}
 
 	else if (strcmp(command, "games") == 0)
@@ -146,12 +177,14 @@ void menu_code(char *str)
 		printf("snake\n");
 		printf("\n");
 		menu_code(str);
+		return;
 	}
 
 	else if (strcmp(command, "signature") == 0)
 	{
 		signature();
 		menu_code(str);
+		return;
 	}
 	
 	else if (strcmp(command, "math game") == 0)
@@ -163,13 +196,14 @@ void menu_code(char *str)
 	{
 		noise(1000,130);
 		menu_code(str);
+		return;
 	}
 	//default
 	else
 	{
 		printf(RED"%s "RESET": command not found, try "YEL"\"help\"\n"RESET, command);
-		
 		menu_code(str);
+		return;
 	}
 	
 }
