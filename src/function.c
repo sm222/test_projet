@@ -204,12 +204,21 @@ int calculate(char *str)
 	int temp = 0;
 	int val = 0;
 	char op;
-	
+
 	while(str[i] == ' ')
 		i++;
-	while(str[i] >= '0' && str[i] <= '9')
-		i++;
-	val = get_number(str,i);
+	if (str[i] == '-')
+		{
+			while(str[i] >= '0' && str[i] <= '9')
+				i++;
+			val = get_number(str,i) *-1;
+		}
+		else
+		{
+			while(str[i] >= '0' && str[i] <= '9')
+				i++;
+			val = get_number(str,i);
+		}
 	while(str[i])
 	{
 		while(str[i] == ' ')
@@ -217,9 +226,19 @@ int calculate(char *str)
 		op = str[i++];
 		while(str[i] == ' ')
 			i++;
-		while(str[i] >= '0' && str[i] <= '9')
-			i++;
-		temp = get_number(str,i);
+		if (str[i] == '-')
+		{
+			while(str[i] >= '0' && str[i] <= '9')
+				i++;
+			temp = get_number(str,i) *-1;
+		}
+		else
+		{
+			while(str[i] >= '0' && str[i] <= '9')
+				i++;
+			temp = get_number(str,i);
+		}
+
 		switch (op)
 		{
 		case '+':
@@ -231,7 +250,7 @@ int calculate(char *str)
 			break;
 		
 		case '*':
-			val = val * temp;
+			val = (temp * val);
 			break;
 
 		case '/':

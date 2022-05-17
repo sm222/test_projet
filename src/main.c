@@ -207,7 +207,7 @@ if (look_for_func(command,("cal")) == 0)
 					printf("%d\n",calculate(arg_v));
 					break;
 				default:
-					//printf(YEL "/*txt here*/" RESET"-" RED "%c " RESET "is not a valid argumant\n",arg);
+					printf(YEL "cal " RESET"-" RED "%c " RESET "is not a valid argumant\n",arg);
 					break;
 				}
 			}
