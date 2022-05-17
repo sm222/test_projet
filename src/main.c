@@ -4,13 +4,15 @@
 //UI, use to take input and navigate all the program
 void menu_code(char *str)
 {
-	int size = 40;
+	int size = 50;
 	char command[size];
-	char arg;// use to look at arg int the function
-	int agr_number = 0;
+	char arg;// use to look at arg int the function ex: -i -a -u
+	int agr_number = 0; //number of arg
 	int arp_p;
-	char arg_v[21];
+	char arg_v[31];//arg value
 	int i = 0;
+	int programe_loop = 0;
+
 	while(arg_v[i])
 		arg_v[i++] = ' ';
 	
@@ -30,6 +32,7 @@ void menu_code(char *str)
 			printf("su - change the name of the user\n");
 			printf("help - give all the commands line (-a for more info)\n");
 			printf("clear - clear console\n");
+			printf("cal - open the calculator\n");
 			printf("games - game list\n");
 			printf("sig - show the sm222\n");
 			printf("exit - close the programe\n");
@@ -50,6 +53,7 @@ void menu_code(char *str)
 					printf("help -a give all information\n");
 					printf("su -u change the name of the user directely\n");
 					printf("clear - clear console\n");
+					printf("cal -i (number and operator with no space) open the calculator\n");
 					printf("games - game list\n");
 					printf("sig - show the sm222\n");
 					printf("exit - close the programe\n");
@@ -176,13 +180,18 @@ if (look_for_func(command,("cal")) == 0)
 		agr_number = number_arg(command,'-');
 		if (get_argP_from_str(command,'-', 1) == 0)
 		{
-			printf("\n");
-			
-				menu_code(str);
-				return;
-			
-			
-			
+			programe_loop = 1;
+			printf("calculator V1, type x or q to exit\n");
+			while(programe_loop == 1)
+			{
+				get_str(command, size);
+				clear_str(command);
+				if (look_for_func(command,("x")) == 0 || look_for_func(command,("q")) == 0)
+					break;
+				printf("%d\n", calculate(command));
+			}
+			menu_code(str);
+			return;
 		}
 		else
 		{
@@ -195,7 +204,7 @@ if (look_for_func(command,("cal")) == 0)
 				switch (arg)
 				{
 				case 'i':
-					
+					printf("%d\n",calculate(arg_v));
 					break;
 				default:
 					//printf(YEL "/*txt here*/" RESET"-" RED "%c " RESET "is not a valid argumant\n",arg);
