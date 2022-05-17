@@ -2,10 +2,12 @@
 
 #include "../include.h"
 
-//use to grab a str form the user 
+/*use to grab a str form the user
+size is the number letters user can type
+*/
 void    get_str(char *return_txt,int size)
 {
-    if(fgets(return_txt,size,stdin))
+    if(fgets(return_txt,size + 1,stdin))
     {
         char *p;
         if((p = strchr(return_txt, '\n')))
@@ -19,6 +21,8 @@ void    get_str(char *return_txt,int size)
         }
     }
 }
+//was use to fix my code
+//https://stackoverflow.com/questions/38767967/clear-input-buffer-after-fgets-in-c
 
 //simple function printing a string
 void	print_str(char *str)
@@ -32,6 +36,7 @@ void	print_str(char *str)
 	}
 	
 }
+
 //find a character of a string, select witch one you want to send back
 // the potiont in the str
 int		get_argP_from_str(char *str,char look_for,int arg_p)
@@ -65,7 +70,8 @@ int number_arg(char *str,char look_for)
 	}
 	return(argN);
 }
-//remove ' ' at the end of a str
+
+//remove ' ' at the end of a string
 void clear_str(char *str)
 {
 	int i = 0;
@@ -77,6 +83,7 @@ void clear_str(char *str)
 	str[i + 1] = '\0';
 	
 }
+
 //return a rendom number, the max being upper
 int		rNum(int upper)
 {
@@ -102,7 +109,7 @@ int	ft_atoi(char *str)
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		num = num * 10 + (str[i] - 48);
+		num = num * 10 + (str[i] -atn);
 		i++;
 	}
 	return (num * min);
@@ -163,18 +170,20 @@ void signature(void)
 	printf(RESET);
 }
 
+//return 1 if false return 0 if right
 int look_for_func(char *str,char *word)
 {
 	int i = 0;
 	while(word[i])
 	{
 		if (word[i] != str[i])
-			return(0);
+			return(1);
 		i++;
 	}
-	return(1);
+	return(0);
 }
-//
+
+//return a str of a arg chose by get_argP_from_str
 void give_arg_v(char *str,char *returnV, int p)
 {
 	int i = 0;
@@ -187,4 +196,75 @@ void give_arg_v(char *str,char *returnV, int p)
 		p++;
 	}
 	returnV[i] = '\0';
+}
+
+int calculate(char *str)
+{
+	int i = 0;
+	int temp = 0;
+	int val = 0;
+	char op;
+	
+	while(str[i] == ' ')
+		i++;
+	while(str[i] >= '0' && str[i] <= '9')
+		i++;
+	val = get_number(str,i);
+	while(str[i])
+	{
+		while(str[i] == ' ')
+			i++;
+		op = str[i++];
+		while(str[i] == ' ')
+			i++;
+		while(str[i] >= '0' && str[i] <= '9')
+			i++;
+		temp = get_number(str,i);
+		switch (op)
+		{
+		case '+':
+			val = val + temp;
+			break;
+		
+		case '-':
+			val = val - temp;
+			break;
+		
+		case '*':
+			val = val * temp;
+			break;
+
+		case '/':
+			val = val / temp;
+			break;
+		
+		case '%':
+			val = val % temp;
+			break;
+		
+		default:
+			if (op >= '0' && op <= '9')
+				printf(RED"%c "RESET"was missing a operator\n", op);
+			else
+				printf(RED"%c "RESET"is invalid\n", op);
+			break;
+		}
+	}
+	return(val);
+}
+
+int get_number(char *str,int p)
+{
+	int i = 1;
+	int val = 0;
+	int temp;
+	p--;
+	while(str[p] >= '0' && str[p] <= '9')
+	{
+		temp = str[p] -atn;
+		val = val + (temp * i);
+		i = i * 10;
+		p--;
+	}
+	return(val);
 }

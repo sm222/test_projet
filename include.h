@@ -20,6 +20,9 @@
 #define RESET	"\x1B[0m"
 #define CLE "\e[1;1H\e[2J"
 
+//ascii to number 
+#define atn 48 
+
 typedef struct snake {
 	int x;
 	int y;
@@ -36,6 +39,7 @@ typedef struct apple {
 
 
 //simple functions
+
 void	signature(void);
 void	print_str(char *str);
 void 	rd_color(void);
@@ -44,6 +48,7 @@ int		ft_atoi(char *str);
 void	noise(int loop, int size);
 
 //snake game
+
 static int size_screen;
 void	lost(int point, char *str);
 void	image(int (*scr)[size_screen], int size);
@@ -52,10 +57,15 @@ void	apples(apple *pomme, int gameboard[size_screen][size_screen]);
 void	game_snake(char *name, int game_size);
 
 //other
+
 void	math_game(char *str);
 void	menu_code(char *str);
 
+int		calculate(char *str);
+int		get_number(char *str,int p);
+
 //text functions
+
 void	give_arg_v(char *str,char *returnV, int p);
 int		get_argP_from_str(char *str,char look_for,int arg_p);
 int		look_for_func(char *str,char *word);

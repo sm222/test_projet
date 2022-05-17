@@ -12,7 +12,9 @@ void lost(int point, char *str)
 	return;
 }
 
-//print the game on the terminal
+/*print the game on the terminal
+the size = length of the snake
+*/
 void image(int (*scr)[size_screen], int size)
 {
 	int x = 0;
@@ -24,13 +26,13 @@ void image(int (*scr)[size_screen], int size)
 		while (x < size_screen)
 		{
 			if (scr[x][y] == size)
-				write(1, "\x1B[32mH\x1B[0m", 11);	//head of the snake
+				write(1, "\x1B[32mH\x1B[0m", 11);	//head of the snake(H)
 			else if (scr[x][y] > 0 && scr[x][y] != size)
-				write(1, "\x1B[32mo\x1B[0m" , 11); //body of the snake
+				write(1, "\x1B[32mo\x1B[0m" , 11); //body of the snake(o)
 			else if (scr[x][y] == -1)
-				write(1 , "\x1B[31mA\x1B[0m" , 11);	//apple
+				write(1 , "\x1B[31mA\x1B[0m" , 11);	//apple (A)
 			else if (x == 0 || x == size_screen -1 || y == 0 || y == size_screen -1)
-				write(1, "\x1B[35mX\x1B[0m", 11);	//wall
+				write(1, "\x1B[35mX\x1B[0m", 11);	//wall(X)
 			else if (scr[x][y] == 0)
 				write(1, " ", 1);
 			write(1, " ", 1);
@@ -52,7 +54,7 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 		info->x = info->x + dir;
 	if (game[info->x][info->y] > 0 || info->x == 0 || info->x == size_screen -1 || info->y == 0 || info->y == size_screen -1) //look for obstacle
 		info->gameOn = 0;
-	else if (game[info->x][info->y] == -1) //if get a apple add 5 poins
+	else if (game[info->x][info->y] == -1) //if get an apple add 5 points
 		{
 			fruit->onOff = 0;
 			info->snakeSize++;
@@ -61,7 +63,7 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 	else
 	{}
 	game[info->x][info->y] = info->snakeSize +1;
-	while (y < size_screen) // clean the board
+	while (y < size_screen) //clean the array
 	{
 		while (x < size_screen)
 		{
@@ -125,7 +127,7 @@ void game_snake(char *name, int game_size)
 		image(scr, snakeInfo.snakeSize);
 		printf("___________________\nscore = %d\n", snakeInfo.score);
 		write(1,"\x1B[33maswd\x1B[0m to \x1B[32mmove\x1B[0m, \x1B[31mx to exit\x1B[0m\n", 52);
-		get_str(str,2);
+		get_str(str,1);
 		chr = str[0];
 		switch (chr)
 		{
@@ -156,5 +158,4 @@ void game_snake(char *name, int game_size)
 	lost(snakeInfo.score, name);
 	return;
 }
-
-//im so happy it work
+//hi

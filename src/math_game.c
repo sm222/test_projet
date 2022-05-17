@@ -14,7 +14,7 @@ void math_game(char *str)
     //}
     get_str(text,size);
     
-    printf("%d\n", get_argP_from_str(text,'-',2));
+    printf("%d\n",calculate(text));
     
     menu_code(str);
 }

@@ -21,17 +21,17 @@ void menu_code(char *str)
 	get_str(command, size);
 	clear_str(command);
 	
-	if (look_for_func(command,("help")) == 1)
+	if (look_for_func(command,("help")) == 0)
 	{
 		agr_number = number_arg(command,'-');
 		if (get_argP_from_str(command,'-', 1) == 0)
 		{
 			printf("help list\n\n");
-			printf("change user - change the name of the user\n");
-			printf("help - give all the commands line\n");
+			printf("su - change the name of the user\n");
+			printf("help - give all the commands line (-a for more info)\n");
 			printf("clear - clear console\n");
 			printf("games - game list\n");
-			printf("signature - show the sm222\n");
+			printf("sig - show the sm222\n");
 			printf("exit - close the programe\n");
 			printf("\n");
 		}
@@ -48,10 +48,10 @@ void menu_code(char *str)
 				case 'a':
 					printf("help list -a\n");
 					printf("help -a give all information\n");
-					printf("change user -u change the name of the user directely\n");
+					printf("su -u change the name of the user directely\n");
 					printf("clear - clear console\n");
 					printf("games - game list\n");
-					printf("signature - show the sm222\n");
+					printf("sig - show the sm222\n");
 					printf("exit - close the programe\n");
 					printf("\n");
 					break;
@@ -66,7 +66,7 @@ void menu_code(char *str)
 		return;
 	}
 
-	if (look_for_func(command,("change user")) == 1)
+	if (look_for_func(command,("su")) == 0)
 	{
 		agr_number = number_arg(command,'-');
 		if (get_argP_from_str(command,'-', 1) == 0)
@@ -119,13 +119,13 @@ void menu_code(char *str)
 		return;
 	}
 
-	else if (look_for_func(command,("exit")) == 1)
+	else if (look_for_func(command,("exit")) == 0)
 	{
 		printf("\e[1;1H\e[2J");
 		return;
 	}
 //snake
-if (look_for_func(command,("snake")) == 1)
+if (look_for_func(command,("snake")) == 0)
 	{
 		agr_number = number_arg(command,'-');
 		if (get_argP_from_str(command,'-', 1) == 0)
@@ -170,8 +170,44 @@ if (look_for_func(command,("snake")) == 1)
 		menu_code(str);
 		return;
 	}
-
-	else if (strcmp(command, "games") == 0)
+//
+if (look_for_func(command,("cal")) == 0)
+	{
+		agr_number = number_arg(command,'-');
+		if (get_argP_from_str(command,'-', 1) == 0)
+		{
+			printf("\n");
+			
+				menu_code(str);
+				return;
+			
+			
+			
+		}
+		else
+		{
+			while (agr_number > 0)
+			{
+				arp_p = get_argP_from_str(command, '-',agr_number);
+				arg = command[arp_p];
+				give_arg_v(command, arg_v, arp_p + 2);
+				agr_number--;
+				switch (arg)
+				{
+				case 'i':
+					
+					break;
+				default:
+					//printf(YEL "/*txt here*/" RESET"-" RED "%c " RESET "is not a valid argumant\n",arg);
+					break;
+				}
+			}
+		}
+		menu_code(str);
+		return;
+	}
+//
+	if (strcmp(command, "games") == 0)
 	{
 		printf("Game list - \n");
 		printf("snake\n");
@@ -180,7 +216,7 @@ if (look_for_func(command,("snake")) == 1)
 		return;
 	}
 
-	else if (strcmp(command, "signature") == 0)
+	else if (strcmp(command, "sig") == 0)
 	{
 		signature();
 		menu_code(str);
@@ -198,6 +234,12 @@ if (look_for_func(command,("snake")) == 1)
 		menu_code(str);
 		return;
 	}
+	else if (strcmp(command, "") == 0)
+	{
+		printf(RED"void "RESET": command not found, try "YEL"\"help\"\n"RESET);
+		menu_code(str);
+		return;
+	}
 	//default
 	else
 	{
@@ -212,6 +254,7 @@ int main(void)
 {
 	printf(CLE);
 	signature();
+	printf(WHT);
 	print_str("v1.0, work in progress - type 'help' to start\n");
 	menu_code("user");
 	return(0);
