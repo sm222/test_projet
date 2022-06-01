@@ -1,14 +1,15 @@
 
 
 
-#ifndef SNAKE_H
-#define SNAKE_H
+#ifndef include_H
+#define include_H
 
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <stdarg.h>
 
 #define RED		"\x1B[31m"
 #define GRN		"\x1B[32m"
@@ -21,7 +22,7 @@
 #define CLE "\e[1;1H\e[2J"
 
 //ascii to number 
-#define atn 48 
+#define atn 48
 
 typedef struct snake {
 	int x;
@@ -37,6 +38,11 @@ typedef struct apple {
 	int onOff;
 } apple;
 
+
+//menu function
+void	menu_code(char *str);
+int		calculate(char *str);
+int		get_number(char *str,int p);
 
 //simple functions
 
@@ -59,10 +65,7 @@ void	game_snake(char *name, int game_size);
 //other
 
 void	math_game(char *str);
-void	menu_code(char *str);
-
-int		calculate(char *str);
-int		get_number(char *str,int p);
+void	print_str2(void *p, char type ,int size);
 
 //text functions
 
@@ -72,4 +75,5 @@ int		look_for_func(char *str,char *word);
 int 	number_arg(char *str,char look_for);
 void	clear_str(char *str);
 void	get_str(char *return_txt,int size);
+
 #endif

@@ -30,11 +30,7 @@ void	print_str(char *str)
 	int i = 0;
 	
 	while (str[i])
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
-	
+		write(1, &str[i++], 1);
 }
 
 //find a character of a string, select witch one you want to send back
@@ -45,7 +41,7 @@ int		get_argP_from_str(char *str,char look_for,int arg_p)
 	int arg = 0;
 	while(str[i])
 	{
-		if(str[i] == ' ')
+		if(str[i] == ' ' || str[i] == '\t')
 			if(str[i + 1] == look_for)
 			{
 				arg++;
@@ -63,7 +59,7 @@ int number_arg(char *str,char look_for)
 	int argN = 0;
 	while(str[i])
 	{
-		if (str[i] == ' ')
+		if (str[i] == ' ' || str[i] == '\t')
 			if (str[i + 1] == look_for)
 				argN++;
 		i++;
@@ -71,14 +67,14 @@ int number_arg(char *str,char look_for)
 	return(argN);
 }
 
-//remove ' ' at the end of a string
+//remove ' ' or 'tabs' at the end of a string
 void clear_str(char *str)
 {
 	int i = 0;
 	while (str[i])
 		i++;
-	i = i -1;
-	while (str[i] == ' ')
+	i--;
+	while (str[i] == ' ' || str[i] == '\t')
 		i--;
 	str[i + 1] = '\0';
 	
@@ -167,7 +163,7 @@ void signature(void)
 	printf("       +#+ +#+       +#+   +#+        +#+        +#+      \n");
 	printf("#+#    #+# #+#       #+#  #+#        #+#        #+#       \n");
 	printf(" ########  ###       ### ########## ########## ########## \n");
-	printf(RESET);
+	printf(RESET WHT);
 }
 
 //return 1 if false return 0 if right
@@ -180,7 +176,9 @@ int look_for_func(char *str,char *word)
 			return(1);
 		i++;
 	}
-	return(0);
+	if (str[i] == '\0' || str[i] == ' ' || str[i] == '\t')
+		return(0);
+	return(1);
 }
 
 //return a str of a arg chose by get_argP_from_str
@@ -242,23 +240,23 @@ int calculate(char *str)
 		switch (op)
 		{
 		case '+':
-			val = val + temp;
+			val += temp;
 			break;
 		
 		case '-':
-			val = val - temp;
+			val -= temp;
 			break;
 		
 		case '*':
-			val = (temp * val);
+			val *= temp;
 			break;
 
 		case '/':
-			val = val / temp;
+			val /= temp;
 			break;
 		
 		case '%':
-			val = val % temp;
+			val %= temp;
 			break;
 		
 		default:
@@ -282,8 +280,74 @@ int get_number(char *str,int p)
 	{
 		temp = str[p] -atn;
 		val = val + (temp * i);
-		i = i * 10;
+		i *= 10;
 		p--;
 	}
 	return(val);
+}
+
+void print_str2(void *p, char type ,int size)
+{
+	int i = 0;
+	int item = 0;
+
+	int *d = (int *)p;
+	char *c = (char *)p;
+	switch (type)
+	{
+	//for char
+	case 'c':
+		while(item < size)
+			printf("/%3d",item++);
+		if (item < size)
+			printf("/%3d",item);
+		printf("\n|");
+		while(i < size)
+		{
+			if (i % 2 == 0)
+				printf(YEL);
+			if (c[i] == '\0')
+				printf("NUL");
+			else if (c[i] == '\t')
+				printf(" \\t");
+			else if (c[i] == '\v')
+				printf(" \\v");
+			else if (c[i] <= 0)
+				printf("-n ");
+			else if (c[i] == 127)
+				printf("DEL");
+			else if (c[i] > 126)
+				printf("+n ");
+			else if (c[i] == 31)
+				printf("US ");
+			else if (c[i] == 1)
+				printf("SOH");
+			else
+				printf(" %c " ,c[i]);
+			printf(RESET "|");
+			i++;
+		}
+		if (i < size)
+			printf("NUL|\n");
+		else
+			printf("\n");
+		break;
+		
+	case 'i':
+		while(item < size)
+			printf("/%9d",item++);
+		printf("\n|");
+		while(i <  size)
+			printf("%9d|" ,d[i++]);
+		write(1, "\n", 2);
+		break;
+
+	case 'p':
+		printf("%p\n", &p);
+		break;
+	
+	default:
+		printf(RED"%c "RESET"not reconise\n", type);
+		break;
+	}
 }
