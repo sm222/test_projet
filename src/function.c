@@ -415,7 +415,7 @@ int mix(char *str,char *word, int *path)
 		*path = back;
 		return(1);
 	}
-	
+
 	while(word[j])
 	{
 		look_for[j] = word[j];
@@ -426,7 +426,7 @@ int mix(char *str,char *word, int *path)
 	look_for[j] = '\0';
 	
 	j = 0;
-	while(!str[i] == '\0' || !str[i] == ' ' || !str[i] == '\t')
+	while(str[i] != '\0' && str[i] != 32 && str[i] != '\t')
 	{
 		while(look_for[j])
 		{
@@ -437,7 +437,7 @@ int mix(char *str,char *word, int *path)
 			}
 			else if(look_for[j] == str[i])
 			{
-				look_for[j] == '\a';
+				look_for[j] = '\a';
 				j = 0;
 				break; 
 			}
