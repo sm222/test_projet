@@ -37,7 +37,7 @@ void menu_loop(char *name)
     }
     else if (func_looking(u_input,("yes"), &str_p) == 0)
     {
-        if(mix(u_input,"letgo",&str_p) == 0)
+        if(mix(u_input,("letgo"),&str_p) == 0)
             printf("yooooo\n");
     }
     else
