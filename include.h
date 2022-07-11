@@ -40,7 +40,7 @@ typedef struct apple {
 
 
 //menu function
-void	menu_code(char *str);
+void	menu_code(char *str,char *input_loop);
 int		calculate(char *str);
 int		get_number(char *str,int p);
 
@@ -49,7 +49,7 @@ int		get_number(char *str,int p);
 void	signature(void);
 void	print_str(char *str);
 void 	rd_color(void);
-int 	rNum(int upper);
+int		r_num(int lower ,int upper);
 int		ft_atoi(char *str);
 void	noise(int loop, int size);
 
@@ -65,7 +65,7 @@ void	game_snake(char *name, int game_size);
 //other
 
 void	math_game(char *str);
-void	print_str2(void *p, char type ,int size);
+void print_str2(void *p, char type ,int size, int color);
 
 //text functions
 
@@ -75,5 +75,12 @@ int		look_for_func(char *str,char *word);
 int 	number_arg(char *str,char look_for);
 void	clear_str(char *str);
 void	get_str(char *return_txt,int size);
+
+//new menu test code
+
+void menu_loop(char *name);
+int func_looking(char *str,char *word, int *path);
+int mix(char *str,char *word, int *path);
+
 
 #endif

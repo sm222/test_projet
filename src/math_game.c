@@ -16,5 +16,5 @@ void math_game(char *str)
     
     printf("%d\n",calculate(text));
     
-    menu_code(str);
+    menu_code(str,"");
 }

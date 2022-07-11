@@ -81,33 +81,43 @@ void clear_str(char *str)
 }
 
 //return a rendom number, the max being upper
-int		rNum(int upper)
+int		r_num(int lower ,int upper)
 {
-	int lower = 0;
+	int swap;
+	if (lower > upper)
+	{
+		swap = lower;
+		lower = upper;
+		upper = swap;
+	}
 	int numb = (rand() % (upper - lower + 1)) + lower;
 	return(numb);
 }
 
 int	ft_atoi(char *str)
 {
+	//atn = 48 ascii to number 
 	int	i = 0;
 	int	num = 0;
 	int	min = 1;
-
+	//while space move one by one in the str 
 	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
 		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
 		i++;
+	//loop for '+' '-', make the number negatif or positif 
 	while (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
 			min = min * -1;
 		i++;
 	}
+	//while there number 
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		num = num * 10 + (str[i] -atn);
 		i++;
 	}
+	//return number
 	return (num * min);
 }
 
@@ -122,7 +132,7 @@ void noise(int loop, int size)
 	{
 		while(j < size)
 		{
-			temp = rNum(105) + 21;
+			temp = r_num(0,105) + 21;
 			rd_color();
 			write(1, &temp, 1);
 			write(1, &RESET,5);
@@ -130,14 +140,14 @@ void noise(int loop, int size)
 		}
 		write(1, "\n", 1);
 		i++;
-		j = rNum(size);
+		j = r_num(0,size);
 	}
 }
 
 // pic a rendom color
 void rd_color(void)
 {
-	int tem = rNum(5);
+	int tem = r_num(0,5);
 	if (tem == 0)
 		write(1, &RED, 6);
 	if (tem == 1)
@@ -163,7 +173,7 @@ void signature(void)
 	printf("       +#+ +#+       +#+   +#+        +#+        +#+      \n");
 	printf("#+#    #+# #+#       #+#  #+#        #+#        #+#       \n");
 	printf(" ########  ###       ### ########## ########## ########## \n");
-	printf(RESET WHT);
+	printf(WHT);
 }
 
 //return 1 if false return 0 if right
@@ -286,7 +296,7 @@ int get_number(char *str,int p)
 	return(val);
 }
 
-void print_str2(void *p, char type ,int size)
+void print_str2(void *p, char type ,int size, int color)
 {
 	int i = 0;
 	int item = 0;
@@ -297,15 +307,21 @@ void print_str2(void *p, char type ,int size)
 	{
 	//for char
 	case 'c':
-		while(item < size)
+		do
+		{
+			if (item == color)
+				printf(RED);
 			printf("/%3d",item++);
-		if (item < size)
-			printf("/%3d",item);
+			printf(WHT);
+		} while(item < size);
+
 		printf("\n|");
 		while(i < size)
 		{
 			if (i % 2 == 0)
 				printf(YEL);
+			if (i == color)
+				printf(RED);
 			if (c[i] == '\0')
 				printf("NUL");
 			else if (c[i] == '\t')
@@ -338,8 +354,13 @@ void print_str2(void *p, char type ,int size)
 			printf("/%9d",item++);
 		printf("\n|");
 		while(i <  size)
+		{
+			if (i == color)
+				printf(RED);
 			printf("%9d|" ,d[i++]);
-		write(1, "\n", 2);
+			printf(WHT);
+		}
+		printf("\n");
 		break;
 
 	case 'p':
@@ -351,3 +372,80 @@ void print_str2(void *p, char type ,int size)
 		break;
 	}
 }
+
+//work!!!
+int func_looking(char *str,char *word, int *path)
+{
+	int i = *path;
+	int back = i;
+	int j = 0;
+	while(str[i] == ' ' || str[i] == '\t')
+		i++;
+	while(word[j])
+	{
+		if (word[j] != str[i])
+			{
+				*path = back;
+				return(1);
+			}
+		j++;	
+		i++;
+	}
+	if (str[i] == '\0' || str[i] == ' ' || str[i] == '\t')
+	{
+		*path = i;
+		return(0);
+	}	
+	*path = back;
+	return(1);
+}
+
+
+int mix(char *str,char *word, int *path)
+{
+	int back = *path;
+	char look_for[14];
+	int j = 0;
+	int i = back;
+	while(str[i] == ' ' || str[i] == '\t')
+		i++;
+	
+	if (str[i] == '\0')
+	{
+		*path = back;
+		return(1);
+	}
+	
+	while(word[j])
+	{
+		look_for[j] = word[j];
+		j++;
+	}
+	look_for[j] = '\r';
+	j++;
+	look_for[j] = '\0';
+	
+	j = 0;
+	while(!str[i] == '\0' || !str[i] == ' ' || !str[i] == '\t')
+	{
+		while(look_for[j])
+		{
+			if (look_for[j] == '\r')
+			{
+				*path = back;
+				return(1);
+			}
+			else if(look_for[j] == str[i])
+			{
+				look_for[j] == '\a';
+				j = 0;
+				break; 
+			}
+			j++;
+		}
+		i++;
+	}
+	*path = i;
+	return(0);
+}
+

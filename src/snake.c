@@ -8,7 +8,7 @@ void lost(int point, char *str)
 {
 	write(1, "\e[1;1H\e[2J", 10);
 	printf("the bord was %d, you lose at %d points\n",size_screen , point);
-	menu_code(str);
+	menu_code(str,"");
 	return;
 }
 
@@ -78,8 +78,8 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 
 void apples(struct apple *pomme ,int gamebord[size_screen][size_screen])
 {
-	pomme->x = rNum( size_screen);
-	pomme->y = rNum( size_screen);
+	pomme->x = r_num(0, size_screen);
+	pomme->y = r_num(0, size_screen);
 	if (gamebord[pomme->x][pomme->y] == 0) //look if it can be fit
 		if (pomme->x != 0 && pomme->y != 0)
 			if(pomme->x < size_screen -1 && pomme->y < size_screen -1) 
