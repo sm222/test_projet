@@ -40,6 +40,7 @@ typedef struct apple {
 
 
 //menu function
+void	tictactoe(char *user);
 void	menu_code(char *str,char *input_loop);
 int		calculate(char *str);
 int		get_number(char *str,int p);
@@ -81,6 +82,9 @@ void	get_str(char *return_txt,int size);
 void menu_loop(char *name);
 int func_looking(char *str,char *word, int *path);
 int mix(char *str,char *word, int *path);
+
+//new game
+
 
 
 #endif

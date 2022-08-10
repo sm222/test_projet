@@ -80,7 +80,9 @@ void clear_str(char *str)
 	
 }
 
-//return a rendom number, the max being upper
+/*return a rendom number, the max being upper
+before using the funck use that in your programe 'srand(time(0));'
+*/
 int		r_num(int lower ,int upper)
 {
 	int swap;
@@ -138,7 +140,7 @@ void noise(int loop, int size)
 			write(1, &RESET,5);
 			j++;
 		}
-		write(1, "\n", 1);
+		write(1, "\n", 2);
 		i++;
 		j = r_num(0,size);
 	}
@@ -246,7 +248,7 @@ int calculate(char *str)
 				i++;
 			temp = get_number(str,i);
 		}
-
+		
 		switch (op)
 		{
 		case '+':
@@ -373,65 +375,86 @@ void print_str2(void *p, char type ,int size, int color)
 	}
 }
 
-//work!!!
+//use to find a 'word' 
 int func_looking(char *str,char *word, int *path)
 {
+	//keep the 'path' in memory 
 	int i = *path;
 	int back = i;
 	int j = 0;
+	//skip space and tab
 	while(str[i] == ' ' || str[i] == '\t')
 		i++;
+	//look if the word mach with the user input
 	while(word[j])
 	{
 		if (word[j] != str[i])
-			{
-				*path = back;
-				return(1);
-			}
+		{
+			*path = back;
+			return(1);
+		}
 		j++;	
 		i++;
 	}
+	//look with the end if the is a end or still some caracter
 	if (str[i] == '\0' || str[i] == ' ' || str[i] == '\t')
 	{
 		*path = i;
 		return(0);
-	}	
+	}
 	*path = back;
 	return(1);
 }
 
-
+/*
+	look for a word with the letter in any order
+		str = user input
+		word = the word you are looking for in the user input
+		path =  the position in the user input
+*/
 int mix(char *str,char *word, int *path)
 {
+	// grab the place were it start looking in the str
 	int back = *path;
+	// use to copy the word 
 	char look_for[14];
-	int j = 0;
+	// use to move in the str
 	int i = back;
+	// use to move in look_for
+	int j = 0;
+	// skip space and tab
 	while(str[i] == ' ' || str[i] == '\t')
 		i++;
+	// if the str end return 1
 	if (str[i] == '\0')
 	{
 		*path = back;
 		return(1);
 	}
+	// copy the 'word' in 'look_for' 
 	while(word[j])
 	{
 		look_for[j] = word[j];
 		j++;
 	}
+	// add a marker for the loop logic, and terminate it 
 	look_for[j] = '\r';
 	j++;
 	look_for[j] = '\0';
 	j = 0;
+	// loop while the word don't end it the user input
 	while(str[i] != '\0' && str[i] != 32 && str[i] != '\t')
 	{
+		// look for letter one by one
 		while(look_for[j])
 		{
+			// if get to the marker with out finding one, return 1
 			if (look_for[j] == '\r')
 			{
 				*path = back;
 				return(1);
 			}
+			// if find one, change the letter so it don't compare it 2 time
 			else if(look_for[j] == str[i])
 			{
 				look_for[j] = '\a';
@@ -443,6 +466,7 @@ int mix(char *str,char *word, int *path)
 		i++;
 	}
 	j = 0;
+	// look to see if all latter was found
 	while(look_for[j])
 	{
 		if(look_for[j] != '\a' && look_for[j] != '\r')
@@ -452,7 +476,12 @@ int mix(char *str,char *word, int *path)
 		}
 	j++;
 	}
+	// success
 	*path = i;
 	return(0);
 }
 
+
+/*
+https://stackoverflow.com/questions/33677992/how-to-move-cursor-back-to-the-first-line-in-c
+*/

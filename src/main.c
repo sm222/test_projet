@@ -271,6 +271,10 @@ if (look_for_func(u_input,("cal")) == 0)
 		menu_code(str,(""));
 		return;
 	}
+	else if (strcmp(u_input, "tic") == 0)
+	{
+		tictactoe(str);
+	}
 	//default
 	else
 	{
