@@ -40,6 +40,10 @@ void menu_loop(char *name)
         if(mix(u_input,("letgo"),&str_p) == 0)
             printf("yooooo\n");
     }
+    else if (func_looking(u_input,("tic"), &str_p) == 0)
+    {
+        tictactoe(name);
+    }
     else
     {
         printf(RED"%s " WHT"is not a valid input\n",u_input);

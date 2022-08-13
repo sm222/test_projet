@@ -62,7 +62,7 @@ int ask_input(int *x, int *y)
     //exit code
     if(look_for_func(input,"xx") == 0)
         return(-1);
-    //chek the 2 char input
+    //look the 2 char input
     if (input[0] >= 'a' && input[0] <= 'c')
     {
         *y = input[0] - 97;
@@ -79,12 +79,10 @@ int ask_input(int *x, int *y)
         else
             return(1);
     }
-    else
-        return (1);
     return(0);
 }
 
-int place_pown(tic *info)
+int place_pawn(tic *info)
 {
     info->x = 0;
     info->y = 0;
@@ -207,6 +205,24 @@ int win_con(tic *value)
     return(0);
 }
 
+void look_draw(tic *game)
+{
+    int x = 0, y = 0;
+    int draw = 0;
+    while(x < 3)
+    {
+        y = 0;
+        while(y < 3)
+        {
+            draw += game->game[x][y];
+            y++;
+        }
+        x++;
+    }
+    if (draw >= 13)
+        game->loop = 0;
+}
+
 void tictactoe(char *user)
 {
     
@@ -232,8 +248,9 @@ void tictactoe(char *user)
     while(game_info.loop == 1)
     {
         print_image(game_info);
-        place_pown(&game_info);
+        place_pawn(&game_info);
         player_win =  win_con(&game_info);
+        look_draw(&game_info);
     }
     print_image(game_info);
     if (player_win == 2)
@@ -241,6 +258,6 @@ void tictactoe(char *user)
     if (player_win == 1)
         printf("Player X win\n");
     if (player_win == 0)
-        printf("Draw ---\n");
+        printf("-- Draw --\n");
     menu_code(user,"");
 }

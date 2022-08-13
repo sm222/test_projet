@@ -21,7 +21,7 @@
 #define RESET	"\x1B[0m"
 #define CLE "\e[1;1H\e[2J"
 
-//ascii to number 
+//ascii to number
 #define atn 48
 
 typedef struct snake {

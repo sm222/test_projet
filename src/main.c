@@ -225,6 +225,7 @@ if (look_for_func(u_input,("cal")) == 0)
 	{
 		printf("Game list - \n");
 		printf("snake\n");
+		printf("tic - tictactoe\n");
 		printf("\n");
 		menu_code(str,(""));
 		return;
