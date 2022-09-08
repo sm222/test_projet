@@ -2,10 +2,18 @@
 
 #include "../include.h"
 
+int sm_str_size(char *input)
+{
+	int i = 0;
+	while (input[i])
+		i++;
+	return i;
+}
+
 /*use to grab a str form the user
 size is the number letters user can type
 */
-void    get_str(char *return_txt,int size)
+int	sm_get_keybord_input(char *return_txt,int size)
 {
     if(fgets(return_txt,size + 1,stdin))
     {
@@ -20,17 +28,20 @@ void    get_str(char *return_txt,int size)
             scanf("%*c");
         }
     }
+	return(sm_str_size(return_txt));
 }
 //was use to fix my code
 //https://stackoverflow.com/questions/38767967/clear-input-buffer-after-fgets-in-c
 
+
+
 //simple function printing a string
-void	print_str(char *str)
+void	sm_print_str(char *str)
 {
 	int i = 0;
-	
 	while (str[i])
-		write(1, &str[i++], 1);
+		i++;
+	write(1, str, i);
 }
 
 //find a character of a string, select witch one you want to send back
@@ -68,7 +79,7 @@ int number_arg(char *str,char look_for)
 }
 
 //remove ' ' or 'tabs' at the end of a string
-void clear_str(char *str)
+void sm_clear_str(char *str)
 {
 	int i = 0;
 	while (str[i])
@@ -83,7 +94,7 @@ void clear_str(char *str)
 /*return a rendom number, the max being upper
 before using the funck use that in your programe 'srand(time(0));'
 */
-int		r_num(int lower ,int upper)
+int		sm_r_num(int lower ,int upper)
 {
 	int swap;
 	if (lower > upper)
@@ -96,7 +107,7 @@ int		r_num(int lower ,int upper)
 	return(numb);
 }
 
-int	ft_atoi(char *str)
+int	sm_atoi(char *str)
 {
 	//atn = 48 ascii to number 
 	int	i = 0;
@@ -134,7 +145,7 @@ void noise(int loop, int size)
 	{
 		while(j < size)
 		{
-			temp = r_num(0,105) + 21;
+			temp = sm_r_num(0,105) + 21;
 			rd_color();
 			write(1, &temp, 1);
 			write(1, &RESET,5);
@@ -142,14 +153,14 @@ void noise(int loop, int size)
 		}
 		write(1, "\n", 2);
 		i++;
-		j = r_num(0,size);
+		j = sm_r_num(0,size);
 	}
 }
 
 // pic a rendom color
 void rd_color(void)
 {
-	int tem = r_num(0,5);
+	int tem = sm_r_num(0,5);
 	if (tem == 0)
 		write(1, &RED, 6);
 	if (tem == 1)
@@ -208,7 +219,7 @@ void give_arg_v(char *str,char *returnV, int p)
 	returnV[i] = '\0';
 }
 
-int calculate(char *str)
+int sm_calculate(char *str)
 {
 	int i = 0;
 	int temp = 0;
@@ -297,8 +308,13 @@ int get_number(char *str,int p)
 	}
 	return(val);
 }
-
-void print_str2(void *p, char type ,int size, int color)
+/*
+	p = pointer
+	type, char or int
+	size = size of the print
+	color = set the focus on one caracter
+*/
+void sm_inspect_arr(void *p, char type ,int size, int color)
 {
 	int i = 0;
 	int item = 0;
@@ -375,8 +391,12 @@ void print_str2(void *p, char type ,int size, int color)
 	}
 }
 
-//use to find a 'word' 
-int func_looking(char *str,char *word, int *path)
+/*
+	use to find a 'word'
+	str = input
+	path = pos in the str
+*/
+int sm_func_looking(char *str,char *word, int *path)
 {
 	//keep the 'path' in memory 
 	int i = *path;
@@ -412,7 +432,7 @@ int func_looking(char *str,char *word, int *path)
 		word = the word you are looking for in the user input
 		path =  the position in the user input
 */
-int mix(char *str,char *word, int *path)
+int sm_find_mix_str(char *str,char *word, int *path)
 {
 	// grab the place were it start looking in the str
 	int back = *path;
@@ -466,7 +486,7 @@ int mix(char *str,char *word, int *path)
 		i++;
 	}
 	j = 0;
-	// look to see if all latter was found
+	// look to see if all letter was found
 	while(look_for[j])
 	{
 		if(look_for[j] != '\a' && look_for[j] != '\r')
@@ -481,7 +501,57 @@ int mix(char *str,char *word, int *path)
 	return(0);
 }
 
-
 /*
 https://stackoverflow.com/questions/33677992/how-to-move-cursor-back-to-the-first-line-in-c
 */
+
+/*
+	input = the source
+	return_v = copy pos
+	start_p =  zone were the copy start in 'input'
+	end_p =  set the end of the copy(number of caracter)
+		(set to under zero to put no limit)
+*/
+int sm_copy_str_to(char *input,char *return_v,int start_p, int end_p) 
+{
+	int i = start_p;
+	int j = 0;
+
+	if (end_p < 0)
+		end_p = 100000;
+	if(input[i] == '\0' || input[i] == ' ' || input[i] == '\t' || end_p == 0)
+		return(0);
+	while(input[i] != '\0' && j < end_p)
+	{
+		return_v[j] = input[i];
+		j++;
+		i++;
+	}
+	return_v[j] = '\0';
+	return(j);
+}
+
+int sm_look_for_char_p(char *str, int start_p ,int number ,char look)
+{
+	int i = start_p;
+	int count = 0;
+	
+	while(str[i])
+	{
+		if (count == number)
+			return(i);
+		if (str[i] == look)
+			count++;
+		i++;
+	}
+	return(0);
+}
+
+void *sm_calloc(size_t type, int size)
+{
+	char *p;
+	p = malloc(type * size);
+	while (size >= 0)
+		p[size--] = 0;
+	return(void *)p;
+}

@@ -15,21 +15,15 @@ void menu_code(char *str,char *input_loop)
 	if (look_for_func(input_loop,("")) == 0)
 	{
 		printf(WHT);
-		print_str(str);
-		write(1 , ":" , 1);
-		get_str(u_input, i_size);
-		clear_str(u_input);
+		sm_print_str(str);
+		write(1,":",1);
+		sm_get_keybord_input(u_input, i_size);
+		sm_clear_str(u_input);
 	}
 	else
-	{
-		arp_p = 0;
-		while(input_loop[arp_p])
-		{
-			u_input[arp_p] = input_loop[arp_p];
-			arp_p++;
-		}
-	}
-	//print_str2(u_input, 'c' , i_size);
+		sm_copy_str_to(input_loop,u_input,-1,10);
+	
+	//sm_inspect_arr(u_input, 'c' , i_size);
 	if (look_for_func(u_input,("help")) == 0)
 	{
 		agr_number = number_arg(u_input,'-');
@@ -76,14 +70,19 @@ void menu_code(char *str,char *input_loop)
 		return;
 	}
 
-	if (look_for_func(u_input,("su")) == 0)
+	else if (look_for_func(u_input,"test") == 0)
+	{
+		menu_loop(str,"clear");
+		return;
+	}
+	else if(look_for_func(u_input,("su")) == 0)
 	{
 		agr_number = number_arg(u_input,'-');
 		if (get_argP_from_str(u_input,'-', 1) == 0)
 		{
 			printf("type the new user (20 characters max, null to set back to default)\n");
-			get_str(u_input, 21);
-			clear_str(u_input);
+			sm_get_keybord_input(u_input, 21);
+			sm_clear_str(u_input);
 			if (strcmp(u_input, "null") == 0)
 				str = ("user");
 			else
@@ -134,21 +133,21 @@ void menu_code(char *str,char *input_loop)
 		return;
 	}
 //snake
-if (look_for_func(u_input,("snake")) == 0)
+	else if (look_for_func(u_input,("snake")) == 0)
 	{
 		agr_number = number_arg(u_input,'-');
 		if (get_argP_from_str(u_input,'-', 1) == 0)
 		{
 			printf("please put a number between 7 and 45\n");
-			get_str(u_input, 21);
-			clear_str(u_input);
-			if (ft_atoi(u_input) < 7 || ft_atoi(u_input) > 45)
+			sm_get_keybord_input(u_input, 21);
+			sm_clear_str(u_input);
+			if (sm_atoi(u_input) < 7 || sm_atoi(u_input) > 45)
 			{
 				printf(RED "%s " RESET "is not a valid input\n", u_input);
 				menu_code(str,(""));
 				return;
 			}
-			game_snake(str,ft_atoi(u_input));
+			game_snake(str,sm_atoi(u_input));
 			return;
 		}
 		else
@@ -162,11 +161,11 @@ if (look_for_func(u_input,("snake")) == 0)
 				switch (arg_c)
 				{
 				case 's':
-					if (ft_atoi(arg_v) < 7 || ft_atoi(arg_v) > 45)
-						printf(YEL "snake -s "RESET RED "%d" RESET "is not a valid input\n", ft_atoi(arg_v));
+					if (sm_atoi(arg_v) < 7 || sm_atoi(arg_v) > 45)
+						printf(YEL "snake -s "RESET RED "%d" RESET "is not a valid input\n", sm_atoi(arg_v));
 					else
 					{
-						game_snake(str,ft_atoi(arg_v));
+						game_snake(str,sm_atoi(arg_v));
 						return;
 					}
 					break;
@@ -180,7 +179,7 @@ if (look_for_func(u_input,("snake")) == 0)
 		return;
 	}
 //
-if (look_for_func(u_input,("cal")) == 0)
+	else if(look_for_func(u_input,("cal")) == 0)
 	{
 		agr_number = number_arg(u_input,'-');
 		if (get_argP_from_str(u_input,'-', 1) == 0)
@@ -189,11 +188,11 @@ if (look_for_func(u_input,("cal")) == 0)
 			printf("calculator V1, type x or q to exit\n");
 			while(programe_loop == 1)
 			{
-				get_str(u_input, i_size);
-				clear_str(u_input);
+				sm_get_keybord_input(u_input, i_size);
+				sm_clear_str(u_input);
 				if (look_for_func(u_input,("x")) == 0 || look_for_func(u_input,("q")) == 0)
 					break;
-				printf("%d\n", calculate(u_input));
+				printf("%d\n", sm_calculate(u_input));
 			}
 			menu_code(str,(""));
 			return;
@@ -209,7 +208,7 @@ if (look_for_func(u_input,("cal")) == 0)
 				switch (arg_c)
 				{
 				case 'i':
-					printf("%d\n",calculate(arg_v));
+					printf("%d\n",sm_calculate(arg_v));
 					break;
 				default:
 					printf(YEL "cal " RESET"-" RED "%c " RESET "is not a valid argumant\n",arg_c);
@@ -221,7 +220,7 @@ if (look_for_func(u_input,("cal")) == 0)
 		return;
 	}
 //
-	if (strcmp(u_input, "games") == 0)
+	else if(strcmp(u_input, "games") == 0)
 	{
 		printf("Game list - \n");
 		printf("snake\n");
@@ -230,8 +229,7 @@ if (look_for_func(u_input,("cal")) == 0)
 		menu_code(str,(""));
 		return;
 	}
-	else if(strcmp(u_input, "test") == 0)
-		menu_loop(str);
+
 	else if (strcmp(u_input, "sig") == 0)
 	{
 		signature();
@@ -255,7 +253,7 @@ if (look_for_func(u_input,("cal")) == 0)
 	{
 		for (int loop = 0; loop < 10; loop++)
 		{
-			printf("%d\n", r_num(10,10));		
+			printf("%d\n", sm_r_num(10,10));		
 		}
 		menu_code(str,(""));
 		return;
@@ -291,7 +289,7 @@ int main(void)
 	printf(CLE);
 	signature();
 	printf(WHT);
-	print_str("v1.0, work in progress - type 'help' to start\n");
+	sm_print_str("v1.0, work in progress - type 'help' to start\n");
 	menu_code(("user"),(""));
 	return(0);
 }

@@ -42,16 +42,16 @@ typedef struct apple {
 //menu function
 void	tictactoe(char *user);
 void	menu_code(char *str,char *input_loop);
-int		calculate(char *str);
+int		sm_calculate(char *str);
 int		get_number(char *str,int p);
 
 //simple functions
 
 void	signature(void);
-void	print_str(char *str);
+void	sm_print_str(char *str);
 void 	rd_color(void);
-int		r_num(int lower ,int upper);
-int		ft_atoi(char *str);
+int		sm_r_num(int lower ,int upper);
+int		sm_atoi(char *str);
 void	noise(int loop, int size);
 
 //snake game
@@ -66,7 +66,7 @@ void	game_snake(char *name, int game_size);
 //other
 
 void	math_game(char *str);
-void print_str2(void *p, char type ,int size, int color);
+void	sm_inspect_arr(void *p, char type ,int size, int color);
 
 //text functions
 
@@ -74,17 +74,19 @@ void	give_arg_v(char *str,char *returnV, int p);
 int		get_argP_from_str(char *str,char look_for,int arg_p);
 int		look_for_func(char *str,char *word);
 int 	number_arg(char *str,char look_for);
-void	clear_str(char *str);
-void	get_str(char *return_txt,int size);
+void	sm_clear_str(char *str);
+int	sm_get_keybord_input(char *return_txt,int size);
 
 //new menu test code
 
-void menu_loop(char *name);
-int func_looking(char *str,char *word, int *path);
-int mix(char *str,char *word, int *path);
-
+void menu_loop(char *name,char *call_back);
+int sm_func_looking(char *str,char *word, int *path);
+int sm_find_mix_str(char *str,char *word, int *path);
+int sm_copy_str_to(char *input,char *return_v,int start_p, int end_p);
+int sm_look_for_char_p(char *str,int start_p ,int number ,char look);
 //new game
-
-
+void defi(char *text);
+//
+void *sm_calloc(size_t type, int size);
 
 #endif

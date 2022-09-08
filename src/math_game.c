@@ -12,9 +12,9 @@ void math_game(char *str)
     //while (gameon == 1)
     //{
     //}
-    get_str(text,size);
+    sm_get_keybord_input(text,size);
     
-    printf("%d\n",calculate(text));
+    printf("%d\n",sm_calculate(text));
     
     menu_code(str,"");
 }

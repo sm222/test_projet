@@ -4,11 +4,11 @@
 
 static int size_screen;
 
-void lost(int point, char *str)
+void lost(int point, char *name)
 {
 	write(1, "\e[1;1H\e[2J", 10);
-	printf("the bord was %d, you lose at %d points\n",size_screen , point);
-	menu_code(str,"");
+	printf("the size bord was %d, you lose at %d points\n",size_screen , point);
+	menu_loop(name,"");
 	return;
 }
 
@@ -78,8 +78,8 @@ void move(int (*game)[size_screen], char key, int dir,struct snake *info,struct 
 
 void apples(struct apple *pomme ,int gamebord[size_screen][size_screen])
 {
-	pomme->x = r_num(0, size_screen);
-	pomme->y = r_num(0, size_screen);
+	pomme->x = sm_r_num(0, size_screen);
+	pomme->y = sm_r_num(0, size_screen);
 	if (gamebord[pomme->x][pomme->y] == 0) //look if it can be fit
 		if (pomme->x != 0 && pomme->y != 0)
 			if(pomme->x < size_screen -1 && pomme->y < size_screen -1) 
@@ -127,7 +127,7 @@ void game_snake(char *name, int game_size)
 		image(scr, snakeInfo.snakeSize);
 		printf("___________________\nscore = %d\n", snakeInfo.score);
 		write(1,"\x1B[33maswd\x1B[0m to \x1B[32mmove\x1B[0m, \x1B[31mx to exit\x1B[0m\n", 52);
-		get_str(str,1);
+		sm_get_keybord_input(str,1);
 		chr = str[0];
 		switch (chr)
 		{

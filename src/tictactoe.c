@@ -58,7 +58,7 @@ void print_image(tic info)
 int ask_input(int *x, int *y)
 {
     char input[3];
-    get_str(input,2);
+    sm_get_keybord_input(input,2);
     //exit code
     if(look_for_func(input,"xx") == 0)
         return(-1);
@@ -259,5 +259,5 @@ void tictactoe(char *user)
         printf("Player X win\n");
     if (player_win == 0)
         printf("-- Draw --\n");
-    menu_code(user,"");
+    menu_loop(user,"");
 }
