@@ -126,7 +126,7 @@ void game_snake(char *name, int game_size)
 			apples(&appleInfo, scr);
 		image(scr, snakeInfo.snakeSize);
 		printf("___________________\nscore = %d\n", snakeInfo.score);
-		write(1,"\x1B[33maswd\x1B[0m to \x1B[32mmove\x1B[0m, \x1B[31mx to exit\x1B[0m\n", 52);
+		write(1,"\x1B[33maswd\x1B[0m to \x1B[32mmove\x1B[0m, \x1B[31mx to exit\x1B[0m\n", 51);
 		sm_get_keybord_input(str,1);
 		chr = str[0];
 		switch (chr)

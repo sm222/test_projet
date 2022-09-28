@@ -4,14 +4,15 @@
 
 void menu_loop(char *name,char *call_back)
 {
-    int size_i = 60;
+    int size_i = 80;
     char u_input[size_i];
-    char copy[size_i / 2];
+    char copy[size_i];
+    char *copy_p;
     int str_p = 0;
     //look for recall input
     if (sm_func_looking(call_back,"",&str_p) == 0)
     {
-        printf("(beta) %s:",name);
+        printf("%s: ",name);
         sm_get_keybord_input(u_input, size_i);
         sm_clear_str(u_input);
     }
@@ -24,7 +25,7 @@ void menu_loop(char *name,char *call_back)
     {
         if (sm_func_looking(u_input,"-a",&str_p) == 0)
         {
-			printf("help list -a\n");
+			printf("help list -a\n\n");
 			printf("help -a give all information\n");
 			printf("su -u change the name of the user directely\n");
 			printf("clear - clear console\n");
@@ -74,6 +75,7 @@ void menu_loop(char *name,char *call_back)
     {
         if(sm_find_mix_str(u_input,("itwork"), &str_p) == 0)
             printf("yes\n");
+        menu_loop(name,"");
     }
     //tictactoe
     else if (sm_func_looking(u_input,("tic"), &str_p) == 0)
@@ -160,22 +162,58 @@ void menu_loop(char *name,char *call_back)
     {
         sm_get_keybord_input(u_input, 50);
         sm_clear_str(u_input);
-        printf("%d \n",sm_look_for_char_p(u_input ,0 ,3,u_input[0]));
+        printf("%f\n",sm_get_number(u_input));
         menu_loop(name,"");
     }
+    //noise
+    else if (sm_func_looking(u_input ,"noise", &str_p) == 0)
+    {
+        noise(1000,130);
+        menu_loop(name,"");
+        return;
+    }
+    //12
+    else if (sm_func_looking(u_input,"12", &str_p) == 0)
+    {
+        menu_loop(name,"echo "RED"12 "RESET": is not valid input, did you mean "YEL"\"Windouze XP\" "RESET"?");
+        return;
+    }
+    else if(sm_func_looking(u_input, "put_nbr",&str_p) == 0)
+    {
+        sm_copy_str_to(u_input, copy, str_p + 1, -1);
+        sm_put_number(sm_atoi(copy));
+        printf("\n");
+        
+        menu_loop(name,"");
+    }
+    else if(sm_func_looking(u_input ,"c06",&str_p) == 0)
+    {
+        ft_print_comb2();
+        menu_loop(name,"");
+        return;
+    }
+    //echo
+    else if (sm_func_looking(u_input,"echo", &str_p) == 0)
+    {
+        copy_p = sm_calloc(sizeof(char),sm_str_size(call_back));
+        sm_copy_str_to(copy_p,u_input,sm_while_space_tab(0,copy_p),-1);
+        printf("%s\n",u_input);
+        free(copy_p);
+        menu_loop(name,"");
+        return;
+    }
+    
     //void
     else if (sm_func_looking(u_input,(""), &str_p) == 0)
     {
         printf(RED"void " WHT"is not a valid input\n");
+        //printf("%f\n",sm_fl(6));
         menu_loop(name,"");
         return;
     }
     //exit
     else if (sm_func_looking(u_input,("exit"), &str_p) == 0)
-    {
-        menu_code(name,(""));
-        return;
-    }
+        exit(0);
     //default 
     else
     {

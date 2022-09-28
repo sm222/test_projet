@@ -2,6 +2,46 @@
 
 #include "../include.h"
 
+void	sm_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+int	sm_while_space(char *str, int i)
+{
+	if (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
+		return(1);
+
+	return(-1);
+}
+
+void	sm_put_number(int nb)
+{
+	if (nb == -2147483648)
+		write(1, "-2147483648", 11);
+	else if (nb < 0)
+	{
+		write(1, "-", 1);
+		sm_put_number(nb * -1);
+	}
+	else if (nb > 9)
+	{
+		sm_put_number(nb / 10);
+		sm_putchar(nb % 10 + '0');
+	}
+	else
+		sm_putchar(nb + '0');
+}
+
+int sm_while_space_tab(int start,char *str)
+{
+	int i = start;
+	while (str[i] == '\t' || str[i] == ' ')
+		i++;
+	return(i);
+}
+
 int sm_str_size(char *input)
 {
 	int i = 0;
@@ -36,46 +76,12 @@ int	sm_get_keybord_input(char *return_txt,int size)
 
 
 //simple function printing a string
-void	sm_print_str(char *str)
+void	sm_print_str(const char *str)
 {
 	int i = 0;
 	while (str[i])
 		i++;
 	write(1, str, i);
-}
-
-//find a character of a string, select witch one you want to send back
-// the potiont in the str
-int		get_argP_from_str(char *str,char look_for,int arg_p)
-{
-	int	i = 0;
-	int arg = 0;
-	while(str[i])
-	{
-		if(str[i] == ' ' || str[i] == '\t')
-			if(str[i + 1] == look_for)
-			{
-				arg++;
-				if (arg == arg_p)
-					return(i + 2);
-			}
-		i++;
-	}
-	return(0);
-}
-
-int number_arg(char *str,char look_for)
-{
-	int i = 0;
-	int argN = 0;
-	while(str[i])
-	{
-		if (str[i] == ' ' || str[i] == '\t')
-			if (str[i + 1] == look_for)
-				argN++;
-		i++;
-	}
-	return(argN);
 }
 
 //remove ' ' or 'tabs' at the end of a string
@@ -114,10 +120,13 @@ int	sm_atoi(char *str)
 	int	num = 0;
 	int	min = 1;
 	//while space move one by one in the str 
-	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+	/*while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
 		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
 		i++;
-	//loop for '+' '-', make the number negatif or positif 
+	*/
+	while(sm_while_space(str,i) > 0)
+		i++;
+	//loop for '+' '-', make the number negative or positive
 	while (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
@@ -177,20 +186,20 @@ void rd_color(void)
 
 void signature(void)
 {
-	printf(BLU);
-	printf(" ::::::::  ::::    ::::   ::::::::   ::::::::   ::::::::  \n");
-	printf(":+:    :+: +:+:+: :+:+:+ :+:    :+: :+:    :+: :+:    :+: \n");
-	printf("+:+        +:+ +:+:+ +:+       +:+        +:+        +:+  \n");
-	printf("+#++:++#++ +#+  +:+  +#+     +#+        +#+        +#+    \n");
-	printf("       +#+ +#+       +#+   +#+        +#+        +#+      \n");
-	printf("       +#+ +#+       +#+   +#+        +#+        +#+      \n");
-	printf("#+#    #+# #+#       #+#  #+#        #+#        #+#       \n");
-	printf(" ########  ###       ### ########## ########## ########## \n");
-	printf(WHT);
+	printf(BLU
+	" ::::::::  ::::    ::::   ::::::::   ::::::::   :::::::: \n"
+	":+:    :+: +:+:+: :+:+:+ :+:    :+: :+:    :+: :+:    :+:\n"
+	"+:+        +:+ +:+:+ +:+       +:+        +:+        +:+ \n"
+	"+#++:++#++ +#+  +:+  +#+     +#+        +#+        +#+   \n"
+	"       +#+ +#+       +#+   +#+        +#+        +#+     \n"
+	"       +#+ +#+       +#+   +#+        +#+        +#+     \n"
+	"#+#    #+# #+#       #+#  #+#        #+#        #+#      \n"
+	" ########  ###       ### ########## ########## ##########\n"
+	WHT);
 }
 
 //return 1 if false return 0 if right
-int look_for_func(char *str,char *word)
+int sm_look_for_word(char *str,char *word)
 {
 	int i = 0;
 	while(word[i])
@@ -203,111 +212,59 @@ int look_for_func(char *str,char *word)
 		return(0);
 	return(1);
 }
+//calculate
 
-//return a str of a arg chose by get_argP_from_str
-void give_arg_v(char *str,char *returnV, int p)
+float	sm_get_number(char *str)
 {
+	float mul = 0.1;
+	float val = 0;
 	int i = 0;
-	while(str[p] == ' ')
-		p++;
-	while(str[p] >= 33 && str[p] <= 126)
+	int i_back = 0;
+
+	while (str[i])
 	{
-		returnV[i] = str[p];
+		if (str[i] == '.')
+			break;
 		i++;
-		p++;
 	}
-	returnV[i] = '\0';
+	if (str[i] == '\0')
+		return(sm_atoi(str));
+	else
+	{
+		i_back = i;
+		i++;
+		while(str[i])
+		{
+			val += mul * (str[i] - '0');
+			mul /= 10;
+			i++;
+		}
+		i = i_back - 1;
+		mul = 1;
+		while(str[i])
+		{
+			val += mul * (str[i] - '0');
+			mul *= 10;
+			i--;
+		}
+	}
+	return(val);
 }
 
+/*
 int sm_calculate(char *str)
 {
-	int i = 0;
-	int temp = 0;
-	int val = 0;
-	char op;
-
-	while(str[i] == ' ')
-		i++;
-	if (str[i] == '-')
-		{
-			while(str[i] >= '0' && str[i] <= '9')
-				i++;
-			val = get_number(str,i) *-1;
-		}
-		else
-		{
-			while(str[i] >= '0' && str[i] <= '9')
-				i++;
-			val = get_number(str,i);
-		}
-	while(str[i])
-	{
-		while(str[i] == ' ')
-			i++;
-		op = str[i++];
-		while(str[i] == ' ')
-			i++;
-		if (str[i] == '-')
-		{
-			while(str[i] >= '0' && str[i] <= '9')
-				i++;
-			temp = get_number(str,i) *-1;
-		}
-		else
-		{
-			while(str[i] >= '0' && str[i] <= '9')
-				i++;
-			temp = get_number(str,i);
-		}
-		
-		switch (op)
-		{
-		case '+':
-			val += temp;
-			break;
-		
-		case '-':
-			val -= temp;
-			break;
-		
-		case '*':
-			val *= temp;
-			break;
-
-		case '/':
-			val /= temp;
-			break;
-		
-		case '%':
-			val %= temp;
-			break;
-		
-		default:
-			if (op >= '0' && op <= '9')
-				printf(RED"%c "RESET"was missing a operator\n", op);
-			else
-				printf(RED"%c "RESET"is invalid\n", op);
-			break;
-		}
-	}
-	return(val);
+	int val1;
+	int val2 = 0;
+	int i = sm_while_space_tab(0,str);
+	if (str[i] < '0' || str[i] > '9')
+		return(0);
+	
+	printf("%s\n",str);
+	return(0);
 }
+*/
 
-int get_number(char *str,int p)
-{
-	int i = 1;
-	int val = 0;
-	int temp;
-	p--;
-	while(str[p] >= '0' && str[p] <= '9')
-	{
-		temp = str[p] -atn;
-		val = val + (temp * i);
-		i *= 10;
-		p--;
-	}
-	return(val);
-}
 /*
 	p = pointer
 	type, char or int

@@ -12,7 +12,7 @@ void print_image(tic info)
 {
     printf(CLE);
     int x = 0, y = 0;
-    write(1," ",2);
+    write(1," ",1);
     while(x < 3)
     {
         printf(" %d  ", x);
@@ -32,13 +32,13 @@ void print_image(tic info)
         while(x < 3)
         {
             if (info.game[x][y] == 1)
-                write(1," X ", 4);
+                write(1," X ", 3);
             else if (info.game[x][y] == 2)
-                write(1," O ",4);
+                write(1," O ",3);
             else
-                write(1,"   ",4);
+                write(1,"   ",3);
             if (x != 2)
-                write(1,"|",2);
+                write(1,"|",1);
             x++;
         }
         if(y != 2)
@@ -60,7 +60,7 @@ int ask_input(int *x, int *y)
     char input[3];
     sm_get_keybord_input(input,2);
     //exit code
-    if(look_for_func(input,"xx") == 0)
+    if(sm_look_for_word(input,"xx") == 0)
         return(-1);
     //look the 2 char input
     if (input[0] >= 'a' && input[0] <= 'c')
