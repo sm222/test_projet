@@ -10,6 +10,8 @@
 #include <time.h>
 #include <string.h>
 #include <stdarg.h>
+//test
+#include <fcntl.h>
 
 #define RED		"\x1B[31m"
 #define GRN		"\x1B[32m"
@@ -69,6 +71,7 @@ void	sm_inspect_arr(void *p, char type ,int size, int color);
 
 //text functions
 
+void	sm_putchar(char c);
 void	sm_put_number(int nb);
 int	sm_str_size(char *input);
 void	give_arg_v(char *str,char *returnV, int p);
@@ -90,5 +93,7 @@ void defi(char *text);
 void ft_print_comb2(void);
 //
 void *sm_calloc(size_t type, int size);
+//test funk
+int print_file(char *name);
 
 #endif

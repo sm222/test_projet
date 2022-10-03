@@ -178,6 +178,7 @@ void menu_loop(char *name,char *call_back)
         menu_loop(name,"echo "RED"12 "RESET": is not valid input, did you mean "YEL"\"Windouze XP\" "RESET"?");
         return;
     }
+    //put nbr
     else if(sm_func_looking(u_input, "put_nbr",&str_p) == 0)
     {
         sm_copy_str_to(u_input, copy, str_p + 1, -1);
@@ -186,6 +187,7 @@ void menu_loop(char *name,char *call_back)
         
         menu_loop(name,"");
     }
+    //c06
     else if(sm_func_looking(u_input ,"c06",&str_p) == 0)
     {
         ft_print_comb2();
@@ -202,7 +204,19 @@ void menu_loop(char *name,char *call_back)
         menu_loop(name,"");
         return;
     }
-    
+    //put_file
+    else if(sm_func_looking(u_input,"rf",&str_p) == 0)
+    {
+        if(sm_func_looking(u_input, (""), &str_p) == 0)
+            print_file("test.txt");
+        else
+        {
+            sm_copy_str_to(u_input,copy,str_p +1,-1);
+            printf("%s\n",copy);
+            print_file(copy);
+        }
+        menu_loop(name,"");
+    }
     //void
     else if (sm_func_looking(u_input,(""), &str_p) == 0)
     {
