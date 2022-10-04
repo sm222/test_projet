@@ -12,6 +12,7 @@
 #include <stdarg.h>
 //test
 #include <fcntl.h>
+#include <dirent.h>
 
 #define RED		"\x1B[31m"
 #define GRN		"\x1B[32m"
@@ -95,5 +96,7 @@ void ft_print_comb2(void);
 void *sm_calloc(size_t type, int size);
 //test funk
 int print_file(char *name);
+int ls(char *path);
+int make_dir(char *name_dir);
 
 #endif

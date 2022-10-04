@@ -217,6 +217,42 @@ void menu_loop(char *name,char *call_back)
         }
         menu_loop(name,"");
     }
+    //ls
+    else if(sm_func_looking(u_input,"ls",&str_p) == 0)
+    {
+        if(sm_func_looking(u_input, (""), &str_p) == 0)
+            ls("");
+        else
+        {
+            sm_copy_str_to(u_input,copy,str_p +1,-1);
+            ls(copy);
+        }
+        menu_loop(name,"");
+    }
+    /*cd
+    else if(sm_func_looking(u_input,"cd",&str_p) == 0)
+    {
+        if(sm_func_looking(u_input, (""), &str_p) == 0)
+            ls("");
+        else
+        {
+            sm_copy_str_to(u_input,copy,str_p +1,-1);
+            ls(copy);
+        }
+        menu_loop(name,"");
+    */
+    //make dir
+    else if(sm_func_looking(u_input,"mkdir",&str_p) == 0)
+    {
+        if(sm_func_looking(u_input, (""), &str_p) == 0)
+            sm_print_str("\nneed a file name\n");
+        else
+        {
+            sm_copy_str_to(u_input,copy,str_p +1,-1);
+            //make_dir(copy);
+        }
+        menu_loop(name,"");
+    }
     //void
     else if (sm_func_looking(u_input,(""), &str_p) == 0)
     {
